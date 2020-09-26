@@ -42,7 +42,6 @@ export class Cube
 	{
 		this.cubes.forEach(el =>
 		{
-			el.mesh.children.forEach(child => el.mesh.remove(child));
 			el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
 			parent.add(el.mesh);
 		});
@@ -63,52 +62,31 @@ export class Cube
 	private sortCubes(cubes: OneCube[], side: CubeSide)
 	{
 		const cubesSorted: OneCube[] = [];
-		const setSides = (var1: "x" | "y" | "z", var2: "x" | "y" | "z") =>
+		const setSides = (var1: "x" | "y" | "z", var2: "x" | "y" | "z", b: boolean) =>
 		{
 			cubes.forEach(el =>
+			{
+				if (el[var1] == 1)
 				{
-					if (el[var1] == 0) cubesSorted[el[var2]] = el;
-					else if (el[var1] == 1)
-					{
-						if (el[var2] == 0) cubesSorted[7] = el;
-						else if (el[var2] == 1) cubesSorted[8] = el;
-						else if (el[var2] == 2) cubesSorted[3] = el;
-					}
-					else if (el[var1] == 2) cubesSorted[6 - el[var2]] = el;
-					else throw new Error("switch default");
-				});
-		}
-		const setSides2 = (var1: "x" | "y" | "z", var2: "x" | "y" | "z") =>
-		{
-			cubes.forEach(el =>
+					if (el[var2] == 0) cubesSorted[7] = el;
+					else if (el[var2] == 1) cubesSorted[8] = el;
+					else if (el[var2] == 2) cubesSorted[3] = el;
+				}
+				else if (el[var1] == 0)
 				{
-					if (el[var1] == 0) cubesSorted[6 - el[var2]] = el;
-					else if (el[var1] == 1)
-					{
-						if (el[var2] == 0) cubesSorted[7] = el;
-						else if (el[var2] == 1) cubesSorted[8] = el;
-						else if (el[var2] == 2) cubesSorted[3] = el;
-					}
-					else if (el[var1] == 2) cubesSorted[el[var2]] = el;
-					else throw new Error("switch default");
-				});
+					if (b) cubesSorted[el[var2]] = el;
+					else cubesSorted[6 - el[var2]] = el;
+				}
+				else if (el[var1] == 2)
+				{
+					if (!b) cubesSorted[el[var2]] = el;
+					else cubesSorted[6 - el[var2]] = el;
+				}
+				else throw new Error("switch default");
+			});
 		}
 		switch (side) {
-			case 0:
-				setSides("x", "y");
-				// cubes.forEach(el =>
-				// {
-				// 	if (el.x == 0) cubesSorted[el.y] = el;
-				// 	else if (el.x == 1)
-				// 	{
-				// 		if (el.y == 0) cubesSorted[7] = el;
-				// 		else if (el.y == 1) cubesSorted[8] = el;
-				// 		else if (el.y == 2) cubesSorted[3] = el;
-				// 	}
-				// 	else if (el.x == 2) cubesSorted[6 - el.y] = el;
-				// 	else throw new Error("switch default");
-				// });
-				break;
+			case 0: setSides("x", "y", true); break;
 			case 1:
 				cubes.forEach(el =>
 				{
@@ -123,66 +101,10 @@ export class Cube
 					else throw new Error("switch default");
 				});
 				break;
-			case 2:
-				setSides2("z", "y");
-				// cubes.forEach(el =>
-				// {
-				// 	if (el.z == 0) cubesSorted[6 - el.y] = el;
-				// 	else if (el.z == 1)
-				// 	{
-				// 		if (el.y == 0) cubesSorted[7] = el;
-				// 		else if (el.y == 1) cubesSorted[8] = el;
-				// 		else if (el.y == 2) cubesSorted[3] = el;
-				// 	}
-				// 	else if (el.z == 2) cubesSorted[el.y] = el;
-				// 	else throw new Error("switch default");
-				// });
-				break;
-			case 3:
-				setSides("x", "z");
-				// cubes.forEach(el =>
-				// {
-				// 	if (el.x == 0) cubesSorted[el.z] = el;
-				// 	else if (el.x == 1)
-				// 	{
-				// 		if (el.z == 0) cubesSorted[7] = el;
-				// 		else if (el.z == 1) cubesSorted[8] = el;
-				// 		else if (el.z == 2) cubesSorted[3] = el;
-				// 	}
-				// 	else if (el.x == 2) cubesSorted[6 - el.z] = el;
-				// 	else throw new Error("switch default");
-				// });
-				break;
-			case 4:
-				setSides("z", "y");
-				// cubes.forEach(el =>
-				// {
-				// 	if (el.z == 0) cubesSorted[el.y] = el;
-				// 	else if (el.z == 1)
-				// 	{
-				// 		if (el.y == 0) cubesSorted[7] = el;
-				// 		else if (el.y == 1) cubesSorted[8] = el;
-				// 		else if (el.y == 2) cubesSorted[3] = el;
-				// 	}
-				// 	else if (el.z == 2) cubesSorted[6 - el.y] = el;
-				// 	else throw new Error("switch default");
-				// });
-				break;
-			case 5:
-				setSides2("x", "y");
-				// cubes.forEach(el =>
-				// {
-				// 	if (el.x == 0) cubesSorted[6 - el.y] = el;
-				// 	else if (el.x == 1)
-				// 	{
-				// 		if (el.y == 0) cubesSorted[7] = el;
-				// 		else if (el.y == 1) cubesSorted[8] = el;
-				// 		else if (el.y == 2) cubesSorted[3] = el;
-				// 	}
-				// 	else if (el.x == 2) cubesSorted[el.y] = el;
-				// 	else throw new Error("switch default");
-				// });
-				break;
+			case 2: setSides("z", "y", false); break;
+			case 3: setSides("x", "z", true); break;
+			case 4: setSides("z", "y", true); break;
+			case 5: setSides("x", "y", false); break;
 			default: throw new Error("switch default");
 		}
 		return cubesSorted;
@@ -247,6 +169,7 @@ export class Cube
 }
 
 //corners: (x == 0 || x == 2) && (y == 0 || y == 2) && (z == 0 || z == 2);
+// el.mesh.children.forEach(child => el.mesh.remove(child));
 
 type CubeSide = 0 | 1 | 2 | 3 | 4 | 5;
 interface OneCube

@@ -10,18 +10,10 @@ export class Side
 	constructor(color: string)
 	{
 		this.color = color;
-		this.tiles.push(new Tile("yellow"));
-		this.tiles.push(new Tile("gold"));
-		this.tiles.push(new Tile("orange"));
-		this.tiles.push(new Tile("red"));
-		this.tiles.push(new Tile("lightgreen"));
-		this.tiles.push(new Tile("lime"));
-		this.tiles.push(new Tile("green"));
-		this.tiles.push(new Tile("darkgreen"));
-		// for (let i = 0; i < 8; i++)
-		// {
-		// 	this.tiles.push(new Tile(color));
-		// }
+		for (let i = 0; i < 8; i++)
+		{
+			this.tiles.push(new Tile(color));
+		}
 	}
 
 	public setSides(top: Side, right: Side, down: Side, left: Side)

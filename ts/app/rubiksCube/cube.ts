@@ -5,7 +5,13 @@ import { Mesh, Object3D } from "three";
 export class Cube
 {
 	private width = 6;
-	private shift = 8;
+	private shift = 1;
+	private rotateSpeed = 5;
+
+	private parent: Object3D | undefined;
+	private rotateAxis = new THREE.Object3D();
+	private rotateSpeedCur = 0;
+	private rotateNow = false;
 	private sides = [
 		new Side("blue"),
 		new Side("red"),
@@ -40,6 +46,10 @@ export class Cube
 
 	public create(parent: Object3D)
 	{
+		this.parent = parent
+		parent.add(this.rotateAxis);
+		const shift = this.getShift();
+		this.rotateAxis.position.set(shift, shift, shift);
 		this.cubes.forEach(el =>
 		{
 			el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
@@ -165,6 +175,35 @@ export class Cube
 	public getShift()
 	{
 		return this.width + this.shift;
+	}
+
+	public rotateSide(side: CubeSide, toRight: boolean)
+	{
+		if (toRight) this.sides[side].rotateRight();
+		else this.sides[side].rotateLeft();
+
+		if (this.parent != undefined)
+		{
+			const sideCubes = this.getSide(side);
+			for (const el of this.rotateAxis.children) {
+				this.rotateAxis.remove(el);
+			}
+			for (const el of sideCubes) {
+				this.parent.remove(el.mesh);
+				this.rotateAxis.add(el.mesh);
+			}
+			this.rotateNow = true;
+			this.rotateSpeedCur = this.rotateSpeed;
+		}
+	}
+
+	public anim(time: number)
+	{
+		if (this.rotateNow)
+		{
+			this.rotateAxis.rotateZ(this.rotateSpeedCur / 180 * Math.PI);
+			if (this.rotateAxis.rotation.z > Math.PI / 2) this.rotateNow = false;
+		}
 	}
 }
 

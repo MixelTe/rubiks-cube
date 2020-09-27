@@ -30,6 +30,11 @@ export class RubiksCube
 		this.scene.background = new THREE.Color(0xAAAAAA);
 
 		new CameraControl(canvas, this.camera, this.scene, { showAxis: true, moveActive: false, zoomActive: false, rotation: "side" });
+
+		window.addEventListener("keydown", (e) =>
+		{
+			if (e.code == "Space") this.cube.rotateSide(0, false);
+		});
 	}
 
 	public start()
@@ -52,7 +57,7 @@ export class RubiksCube
 
 	private animate(time: number)
 	{
-
+		this.cube.anim(time);
 
 		this.resize();
 		this.renderer.render(this.scene, this.camera);

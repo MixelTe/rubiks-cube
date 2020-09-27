@@ -31,14 +31,13 @@ export class Cube
 		this.sides[4].setSides(this.sides[5], this.sides[1], this.sides[0], this.sides[3]);
 		this.sides[5].setSides(this.sides[2], this.sides[1], this.sides[4], this.sides[3]);
 
-		for (let z = 0; z < 3; z++) {
-			for (let y = 0; y < 3; y++) {
-				for (let x = 0; x < 3; x++)
+		for (let z = -1; z <= 1; z++) {
+			for (let y = -1; y <= 1; y++) {
+				for (let x = -1; x <= 1; x++)
 				{
 					const mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(this.width, this.width, this.width), new THREE.MeshPhongMaterial({ color: "gray" }));
 					const tiles: Mesh[] = [];
-					const center = (x == 1 && y == 1 && (z == 0 || z == 2)) || (z == 1 && !((x == 0 || x == 2) && (y == 0 || y == 2)));
-					this.cubes.push({ x, y, z, mesh, tiles, center});
+					this.cubes.push({ x, y, z, mesh, tiles });
 				}
 			}
 		}
@@ -48,8 +47,6 @@ export class Cube
 	{
 		this.parent = parent
 		parent.add(this.rotateAxis);
-		const shift = this.getShift();
-		this.rotateAxis.position.set(shift, shift, shift);
 		this.cubes.forEach(el =>
 		{
 			el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
@@ -76,21 +73,21 @@ export class Cube
 		{
 			cubes.forEach(el =>
 			{
-				if (el[var1] == 1)
+				if (el[var1] == 0)
 				{
-					if (el[var2] == 0) cubesSorted[7] = el;
-					else if (el[var2] == 1) cubesSorted[8] = el;
-					else if (el[var2] == 2) cubesSorted[3] = el;
+					if (el[var2] == -1) cubesSorted[7] = el;
+					else if (el[var2] == 0) cubesSorted[8] = el;
+					else if (el[var2] == 1) cubesSorted[3] = el;
 				}
-				else if (el[var1] == 0)
+				else if (el[var1] == -1)
 				{
-					if (b) cubesSorted[el[var2]] = el;
-					else cubesSorted[6 - el[var2]] = el;
+					if (b) cubesSorted[el[var2] + 1] = el;
+					else cubesSorted[5 - el[var2]] = el;
 				}
-				else if (el[var1] == 2)
+				else if (el[var1] == 1)
 				{
-					if (!b) cubesSorted[el[var2]] = el;
-					else cubesSorted[6 - el[var2]] = el;
+					if (!b) cubesSorted[el[var2] + 1] = el;
+					else cubesSorted[5 - el[var2]] = el;
 				}
 				else throw new Error("switch default");
 			});
@@ -100,14 +97,14 @@ export class Cube
 			case 1:
 				cubes.forEach(el =>
 				{
-					if (el.x == 0) cubesSorted[2 - el.z] = el;
-					else if (el.x == 1)
+					if (el.x == -1) cubesSorted[1 - el.z] = el;
+					else if (el.x == 0)
 					{
-						if (el.z == 0) cubesSorted[3] = el;
-						else if (el.z == 1) cubesSorted[8] = el;
-						else if (el.z == 2) cubesSorted[7] = el;
+						if (el.z == -1) cubesSorted[3] = el;
+						else if (el.z == 0) cubesSorted[8] = el;
+						else if (el.z == 1) cubesSorted[7] = el;
 					}
-					else if (el.x == 2) cubesSorted[4 + el.z] = el;
+					else if (el.x == 1) cubesSorted[5 + el.z] = el;
 					else throw new Error("switch default");
 				});
 				break;
@@ -124,12 +121,12 @@ export class Cube
 		const cubes: OneCube[] = [];
 		let getTest: (cube: OneCube) => boolean;
 		switch (side) {
-			case 0: getTest = (cube: OneCube) => cube.z == 2; break;
-			case 1: getTest = (cube: OneCube) => cube.y == 2; break;
-			case 2: getTest = (cube: OneCube) => cube.x == 2; break;
-			case 3: getTest = (cube: OneCube) => cube.y == 0; break;
-			case 4: getTest = (cube: OneCube) => cube.x == 0; break;
-			case 5: getTest = (cube: OneCube) => cube.z == 0; break;
+			case 0: getTest = (cube: OneCube) => cube.z == 1; break;
+			case 1: getTest = (cube: OneCube) => cube.y == 1; break;
+			case 2: getTest = (cube: OneCube) => cube.x == 1; break;
+			case 3: getTest = (cube: OneCube) => cube.y == -1; break;
+			case 4: getTest = (cube: OneCube) => cube.x == -1; break;
+			case 5: getTest = (cube: OneCube) => cube.z == -1; break;
 			default: throw new Error("switch default");
 		}
 		this.cubes.forEach(el =>
@@ -172,10 +169,6 @@ export class Cube
 		}
 		cube.add(mesh);
 	}
-	public getShift()
-	{
-		return this.width + this.shift;
-	}
 
 	public rotateSide(side: CubeSide, toRight: boolean)
 	{
@@ -216,7 +209,6 @@ interface OneCube
 	x: number,
 	y: number,
 	z: number,
-	center: boolean,
 	mesh: Mesh,
 	tiles: Mesh[],
 }

@@ -48,8 +48,6 @@ export class RubiksCube
 
 			this.scene.add(this.cubeParent);
 			this.cube.create(this.cubeParent);
-			const shift = -this.cube.getShift();
-			this.cubeParent.position.set(shift, shift, shift);
 
 			this.animate(0);
 		}

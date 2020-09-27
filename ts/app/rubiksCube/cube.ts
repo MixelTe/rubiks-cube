@@ -182,7 +182,7 @@ export class Cube
 		this.setTiles();
 	}
 
-	public rotateSide(side: CubeSide, toRight: boolean, anim = true)
+	public rotateSide(side: number, toRight: boolean, anim = true)
 	{
 		if (side > 5 || side < 0)
 		{
@@ -196,7 +196,7 @@ export class Cube
 
 			if (anim && this.parent != undefined)
 			{
-				const sideCubes = this.getSide(side);
+				const sideCubes = this.getSide(<CubeSide>side);
 				for (const el of sideCubes) {
 					this.parent.remove(el.mesh);
 					this.rotateAxis.add(el.mesh);
@@ -211,6 +211,14 @@ export class Cube
 				if (side == 3 || side == 4 || side == 5) this.rotateSpeedCur *= -1;
 			}
 		}
+	}
+	public update()
+	{
+		this.recreateTiles();
+	}
+	public animEnded()
+	{
+		return !this.rotateNow;
 	}
 
 	public anim(time: number)

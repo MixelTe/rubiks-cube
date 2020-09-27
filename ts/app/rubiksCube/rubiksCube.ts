@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Scene, WebGLRenderer, PerspectiveCamera } from 'three';
 import { CameraControl } from "../cameraControl";
 import { Cube } from "./cube";
+import { CubeRotator } from "./cubeRotator";
 
 export class RubiksCube
 {
@@ -11,11 +12,13 @@ export class RubiksCube
 	private renderer: WebGLRenderer;
 	private cubeParent = new THREE.Object3D();
 	private cube = new Cube();
+	private cubeRotator: CubeRotator;
 	private started = false;
 
 	constructor(canvas: HTMLCanvasElement)
 	{
 		this.canvas = canvas;
+		this.cubeRotator = new CubeRotator(this.cube);
 
 		this.renderer = new THREE.WebGLRenderer({ canvas });
 
@@ -30,19 +33,6 @@ export class RubiksCube
 		this.scene.background = new THREE.Color(0xAAAAAA);
 
 		new CameraControl(canvas, this.camera, this.scene, { showAxis: true, moveActive: false, zoomActive: false, rotation: "side" });
-
-		window.addEventListener("keydown", (e) =>
-		{
-			const toRight = e.ctrlKey;
-			switch (e.code) {
-				case "Numpad5": this.cube.rotateSide(0, toRight); break;
-				case "Numpad6": this.cube.rotateSide(1, toRight); break;
-				case "Numpad2": this.cube.rotateSide(2, toRight); break;
-				case "Numpad4": this.cube.rotateSide(3, toRight); break;
-				case "Numpad8": this.cube.rotateSide(4, toRight); break;
-				case "Numpad9": this.cube.rotateSide(5, toRight); break;
-			}
-		});
 	}
 
 	public start()
@@ -64,6 +54,7 @@ export class RubiksCube
 	private pastTime = 0;
 	private animate(time: number)
 	{
+		this.cubeRotator.update();
 		this.cube.anim(time);
 
 		this.resize();

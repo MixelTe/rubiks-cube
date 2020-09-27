@@ -140,7 +140,7 @@ export class Cube
 		let color
 		if (tile instanceof Tile) color = tile.color;
 		else color = tile;
-		const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(this.width, this.width), new THREE.MeshPhongMaterial({ color }));
+		const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(this.width, this.width), new THREE.MeshBasicMaterial({ color }));
 		switch (side) {
 			case 0:
 				mesh.position.z = this.width / 2 + 0.1;
@@ -169,18 +169,26 @@ export class Cube
 		}
 		cube.add(mesh);
 	}
+	private recreateTiles()
+	{
+		this.cubes.forEach(el =>
+		{
+			for (let i = el.mesh.children.length - 1; i >= 0; i--)
+			{
+				el.mesh.remove(el.mesh.children[i]);
+			}
+		});
+		this.setTiles();
+	}
 
 	public rotateSide(side: CubeSide, toRight: boolean)
 	{
 		if (toRight) this.sides[side].rotateRight();
 		else this.sides[side].rotateLeft();
 
-		if (this.parent != undefined)
+		if (this.parent != undefined && !this.rotateNow)
 		{
 			const sideCubes = this.getSide(side);
-			for (const el of this.rotateAxis.children) {
-				this.rotateAxis.remove(el);
-			}
 			for (const el of sideCubes) {
 				this.parent.remove(el.mesh);
 				this.rotateAxis.add(el.mesh);
@@ -195,13 +203,27 @@ export class Cube
 		if (this.rotateNow)
 		{
 			this.rotateAxis.rotateZ(this.rotateSpeedCur / 180 * Math.PI);
-			if (this.rotateAxis.rotation.z > Math.PI / 2) this.rotateNow = false;
+			if (this.rotateAxis.rotation.z > Math.PI / 2) this.endAnim();
 		}
+	}
+	private endAnim()
+	{
+		if (this.parent != undefined)
+		{
+			this.recreateTiles();
+			for (let i = this.rotateAxis.children.length - 1; i >= 0; i--) {
+				const el = this.rotateAxis.children[i];
+				this.rotateAxis.remove(el);
+				this.parent.add(el);
+			}
+		}
+		this.rotateNow = false;
+		this.rotateSpeedCur = 0;
+		this.rotateAxis.rotation.set(0, 0, 0);
 	}
 }
 
 //corners: (x == 0 || x == 2) && (y == 0 || y == 2) && (z == 0 || z == 2);
-// el.mesh.children.forEach(child => el.mesh.remove(child));
 
 type CubeSide = 0 | 1 | 2 | 3 | 4 | 5;
 interface OneCube

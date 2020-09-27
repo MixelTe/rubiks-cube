@@ -10,6 +10,7 @@ export class Cube
 
 	private parent: Object3D | undefined;
 	private rotateAxis = new THREE.Object3D();
+	private rotateAxisCur: "x" | "y" | "z" = "x";
 	private rotateSpeedCur = 0;
 	private rotateNow = false;
 	private sides = [
@@ -181,20 +182,34 @@ export class Cube
 		this.setTiles();
 	}
 
-	public rotateSide(side: CubeSide, toRight: boolean)
+	public rotateSide(side: CubeSide, toRight: boolean, anim = true)
 	{
-		if (toRight) this.sides[side].rotateRight();
-		else this.sides[side].rotateLeft();
-
-		if (this.parent != undefined && !this.rotateNow)
+		if (side > 5 || side < 0)
 		{
-			const sideCubes = this.getSide(side);
-			for (const el of sideCubes) {
-				this.parent.remove(el.mesh);
-				this.rotateAxis.add(el.mesh);
+			console.error("uncorrect side");
+			return;
+		}
+		if (!this.rotateNow)
+		{
+			if (toRight) this.sides[side].rotateRight();
+			else this.sides[side].rotateLeft();
+
+			if (anim && this.parent != undefined)
+			{
+				const sideCubes = this.getSide(side);
+				for (const el of sideCubes) {
+					this.parent.remove(el.mesh);
+					this.rotateAxis.add(el.mesh);
+				}
+				this.rotateNow = true;
+				this.rotateSpeedCur = this.rotateSpeed;
+				if (toRight) this.rotateSpeedCur *= -1;
+
+				if (side == 0 || side == 5) this.rotateAxisCur = "z";
+				else if (side == 1 || side == 3) this.rotateAxisCur = "y";
+				else if (side == 2 || side == 4) this.rotateAxisCur = "x";
+				if (side == 3 || side == 4 || side == 5) this.rotateSpeedCur *= -1;
 			}
-			this.rotateNow = true;
-			this.rotateSpeedCur = this.rotateSpeed;
 		}
 	}
 
@@ -202,8 +217,9 @@ export class Cube
 	{
 		if (this.rotateNow)
 		{
-			this.rotateAxis.rotateZ(this.rotateSpeedCur / 180 * Math.PI);
-			if (this.rotateAxis.rotation.z > Math.PI / 2) this.endAnim();
+			this.rotateAxis.rotation[this.rotateAxisCur] += this.rotateSpeedCur / 180 * Math.PI;
+			if (this.rotateAxis.rotation[this.rotateAxisCur] > Math.PI / 2 ||
+				this.rotateAxis.rotation[this.rotateAxisCur] < -Math.PI / 2) this.endAnim();
 		}
 	}
 	private endAnim()

@@ -33,7 +33,15 @@ export class RubiksCube
 
 		window.addEventListener("keydown", (e) =>
 		{
-			if (e.code == "Space") this.cube.rotateSide(0, false);
+			const toRight = e.ctrlKey;
+			switch (e.code) {
+				case "Numpad5": this.cube.rotateSide(0, toRight); break;
+				case "Numpad6": this.cube.rotateSide(1, toRight); break;
+				case "Numpad2": this.cube.rotateSide(2, toRight); break;
+				case "Numpad4": this.cube.rotateSide(3, toRight); break;
+				case "Numpad8": this.cube.rotateSide(4, toRight); break;
+				case "Numpad9": this.cube.rotateSide(5, toRight); break;
+			}
 		});
 	}
 
@@ -53,6 +61,7 @@ export class RubiksCube
 		}
 	}
 
+	private pastTime = 0;
 	private animate(time: number)
 	{
 		this.cube.anim(time);

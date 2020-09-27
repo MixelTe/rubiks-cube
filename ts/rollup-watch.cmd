@@ -1,1 +1,0 @@
-start rollup -c --watch

@@ -7,12 +7,12 @@ export class Side
 	private right: Side = this;
 	private down: Side = this;
 
-	constructor(color: string)
+	constructor(color: string, colorN: number)
 	{
 		this.color = color;
 		for (let i = 0; i < 8; i++)
 		{
-			this.tiles.push(new Tile(color));
+			this.tiles.push(new Tile(color, colorN));
 		}
 	}
 
@@ -96,9 +96,11 @@ export class Side
 export class Tile
 {
 	public color: string;
+	public colorN: number;
 
-	constructor(color: string)
+	constructor(color: string, colorN: number)
 	{
 		this.color = color;
+		this.colorN = colorN;
 	}
 }

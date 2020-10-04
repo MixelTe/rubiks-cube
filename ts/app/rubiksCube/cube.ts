@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Side, Tile } from "./side";
-import { Mesh, Object3D } from "three";
+import { Mesh, Object3D, Font } from "three";
 
 export class Cube
 {
@@ -13,15 +13,16 @@ export class Cube
 	private rotateAxisCur: "x" | "y" | "z" = "x";
 	private rotateSpeedCur = 0;
 	private rotateNow = false;
-	private sides = [
-		new Side("blue"),
-		new Side("red"),
-		new Side("white"),
-		new Side("orange"),
-		new Side("yellow"),
-		new Side("green"),
+	public sides = [
+		new Side("blue", 0),
+		new Side("red", 1),
+		new Side("white", 2),
+		new Side("orange", 3),
+		new Side("yellow", 4),
+		new Side("green", 5),
 	];
 	private cubes: OneCube[] = [];
+	private font: THREE.TextGeometryParameters | null = null;
 
 	constructor()
 	{
@@ -42,6 +43,18 @@ export class Cube
 				}
 			}
 		}
+
+		const loader = new THREE.FontLoader();
+		loader.load('../ts/node_modules/three/examples/fonts/helvetiker_regular.typeface.json', (font) =>
+		{
+			this.font = <THREE.TextGeometryParameters>{
+				font: font,
+				size: 1,
+				height: 0.1,
+				curveSegments: 12,
+				bevelEnabled: false,
+			};
+		});
 	}
 
 	public create(parent: Object3D)
@@ -62,8 +75,8 @@ export class Cube
 			const sideCubes = this.sortCubes(this.getSide(<CubeSide>i), <CubeSide>i);
 			sideCubes.forEach((el, index) =>
 			{
-				if (index < 8) this.createTile(el.mesh, this.sides[i].tiles[index], <CubeSide>i);
-				else this.createTile(el.mesh, this.sides[i].color, <CubeSide>i);
+				if (index < 8) this.createTile(el.mesh, this.sides[i].tiles[index], <CubeSide>i, index);
+				else this.createTile(el.mesh, this.sides[i].color, <CubeSide>i, 8);
 			});
 		}
 	}
@@ -136,7 +149,7 @@ export class Cube
 		});
 		return cubes;
 	}
-	private createTile(cube: Mesh, tile: Tile | string, side: CubeSide)
+	private createTile(cube: Mesh, tile: Tile | string, side: CubeSide, index: number) //remove index
 	{
 		let color
 		if (tile instanceof Tile) color = tile.color;
@@ -169,6 +182,12 @@ export class Cube
 			default: console.error("switch default"); break;
 		}
 		cube.add(mesh);
+
+		if (this.font != null)
+		{
+			const text = new THREE.Mesh(new THREE.TextGeometry(`${index}`, this.font), new THREE.MeshBasicMaterial({ color: "black" }));
+			mesh.add(text);
+		}
 	}
 	private recreateTiles()
 	{

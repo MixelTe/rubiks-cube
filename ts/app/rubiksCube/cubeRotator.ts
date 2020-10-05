@@ -485,29 +485,28 @@ export class CubeRotator
 		const tiles2 = this.cube.sides[2].tiles;
 		const tiles3 = this.cube.sides[3].tiles;
 		const tiles4 = this.cube.sides[4].tiles;
-		const tiles5 = this.cube.sides[5].tiles;
 		if (tiles0[0].colorN != 0 || tiles3[2].colorN != 3 || tiles4[6].colorN != 4)
 		{
 			this.log("stage1:", this.DEV_stageColor);
-			this.solveStage1_OneCube2(0);
+			this.solveStage1_OneCube(0);
 		}
 		else if (tiles0[2].colorN != 0 || tiles4[4].colorN != 4 || tiles1[0].colorN != 1)
 		{
 			this.log("stage1:", this.DEV_stageColor);
-			this.solveStage1_OneCube2(1);
+			this.solveStage1_OneCube(1);
 		}
 		else if (tiles0[4].colorN != 0 || tiles1[6].colorN != 1 || tiles2[2].colorN != 2)
 		{
 			this.log("stage1:", this.DEV_stageColor);
-			this.solveStage1_OneCube2(2);
+			this.solveStage1_OneCube(2);
 		}
 		else if (tiles0[6].colorN != 0 || tiles2[0].colorN != 2 || tiles3[4].colorN != 3)
 		{
 			this.log("stage1:", this.DEV_stageColor);
-			this.solveStage1_OneCube2(3);
+			this.solveStage1_OneCube(3);
 		}
 	}
-	public solveStage1_OneCube2(pos: 0 | 1 | 2 | 3)
+	public solveStage1_OneCube(pos: 0 | 1 | 2 | 3)
 	{
 		let c1, c2, c3;
 		switch (pos) {

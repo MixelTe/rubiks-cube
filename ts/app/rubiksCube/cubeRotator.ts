@@ -8,7 +8,7 @@ export class CubeRotator
 	private mixPastSide = 0;
 	private animMix = false;
 	private solveNow = false;
-	private solveStage: 0 | 1 = 0;
+	private solveStage: 0 | 1 = 1;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
 
@@ -510,84 +510,128 @@ export class CubeRotator
 		const tiles5 = this.cube.sides[5].tiles;
 
 		//on bottom
-		if (this.check3(tiles5[0].colorN, c1, c2, c3) || this.check3(tiles3[6].colorN, c1, c2, c3) || this.check3(tiles2[6].colorN, c1, c2, c3))
+		if (this.check3(tiles5[0].colorN, c1, c2, c3) && this.check3(tiles3[6].colorN, c1, c2, c3) && this.check3(tiles2[6].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(4, true);
+					this.rAlg(5, false);
+					this.rAlg(4, false);
 					break;
 				case 1:
-
+					this.rAlg(5, false);
+					this.rAlg(1, true);
+					this.rAlg(5, false);
+					this.rAlg(1, false);
 					break;
 				case 2:
-
+					this.rAlg(1, false);
+					this.rAlg(5, true);
+					this.rAlg(1, true);
 					break;
 				case 3:
-
+					this.rAlg(5, false);
+					this.rAlg(2, false);
+					this.rAlg(5, true);
+					this.rAlg(2, true);
 					break;
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg1_" + pos);
 		}
-		else if (this.check3(tiles5[2].colorN, c1, c2, c3) || this.check3(tiles2[4].colorN, c1, c2, c3) || this.check3(tiles1[4].colorN, c1, c2, c3))
+		else if (this.check3(tiles5[2].colorN, c1, c2, c3) && this.check3(tiles2[4].colorN, c1, c2, c3) && this.check3(tiles1[4].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(5, false);
+					this.rAlg(4, true);
+					this.rAlg(5, false);
+					this.rAlg(4, false);
 					break;
 				case 1:
-
+					this.rAlg(4, false);
+					this.rAlg(5, true);
+					this.rAlg(4, true);
 					break;
 				case 2:
-
+					this.rAlg(5, false);
+					this.rAlg(1, false);
+					this.rAlg(5, true);
+					this.rAlg(1, true);
 					break;
 				case 3:
-
+					this.rAlg(3, true);
+					this.rAlg(5, false);
+					this.rAlg(3, false);
 					break;
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg2_" + pos);
 		}
-		else if (this.check3(tiles5[4].colorN, c1, c2, c3) || this.check3(tiles1[2].colorN, c1, c2, c3) || this.check3(tiles4[2].colorN, c1, c2, c3))
+		else if (this.check3(tiles5[4].colorN, c1, c2, c3) && this.check3(tiles1[2].colorN, c1, c2, c3) && this.check3(tiles4[2].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(3, false);
+					this.rAlg(5, true);
+					this.rAlg(3, true);
 					break;
 				case 1:
-
+					this.rAlg(5, false);
+					this.rAlg(4, false);
+					this.rAlg(5, true);
+					this.rAlg(4, true);
 					break;
 				case 2:
-
+					this.rAlg(2, true);
+					this.rAlg(5, false);
+					this.rAlg(2, false);
 					break;
 				case 3:
-
+					this.rAlg(5, false);
+					this.rAlg(3, true);
+					this.rAlg(5, false);
+					this.rAlg(3, false);
 					break;
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg3_" + pos);
 		}
-		else if (this.check3(tiles5[6].colorN, c1, c2, c3) || this.check3(tiles4[0].colorN, c1, c2, c3) || this.check3(tiles3[0].colorN, c1, c2, c3))
+		else if (this.check3(tiles5[6].colorN, c1, c2, c3) && this.check3(tiles4[0].colorN, c1, c2, c3) && this.check3(tiles3[0].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(5, false);
+					this.rAlg(3, false);
+					this.rAlg(5, true);
+					this.rAlg(3, true);
 					break;
 				case 1:
-
+					this.rAlg(1, true);
+					this.rAlg(5, false);
+					this.rAlg(1, false);
 					break;
 				case 2:
-
+					this.rAlg(5, false);
+					this.rAlg(2, true);
+					this.rAlg(5, false);
+					this.rAlg(2, false);
 					break;
 				case 3:
-
+					this.rAlg(2, false);
+					this.rAlg(5, true);
+					this.rAlg(2, true);
 					break;
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg4_" + pos);
 		}
 		//on top
-		else if (this.check3(tiles0[0].colorN, c1, c2, c3) || this.check3(tiles3[2].colorN, c1, c2, c3) || this.check3(tiles4[6].colorN, c1, c2, c3))
+		else if (this.check3(tiles0[0].colorN, c1, c2, c3) && this.check3(tiles3[2].colorN, c1, c2, c3) && this.check3(tiles4[6].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
@@ -605,8 +649,9 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg5_" + pos);
 		}
-		else if (this.check3(tiles0[2].colorN, c1, c2, c3) || this.check3(tiles4[4].colorN, c1, c2, c3) || this.check3(tiles1[0].colorN, c1, c2, c3))
+		else if (this.check3(tiles0[2].colorN, c1, c2, c3) && this.check3(tiles4[4].colorN, c1, c2, c3) && this.check3(tiles1[0].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
@@ -624,8 +669,9 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg6_" + pos);
 		}
-		else if (this.check3(tiles0[4].colorN, c1, c2, c3) || this.check3(tiles1[6].colorN, c1, c2, c3) || this.check3(tiles2[2].colorN, c1, c2, c3))
+		else if (this.check3(tiles0[4].colorN, c1, c2, c3) && this.check3(tiles1[6].colorN, c1, c2, c3) && this.check3(tiles2[2].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
@@ -643,8 +689,9 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg7_" + pos);
 		}
-		else if (this.check3(tiles0[6].colorN, c1, c2, c3) || this.check3(tiles2[0].colorN, c1, c2, c3) || this.check3(tiles3[4].colorN, c1, c2, c3))
+		else if (this.check3(tiles0[6].colorN, c1, c2, c3) && this.check3(tiles2[0].colorN, c1, c2, c3) && this.check3(tiles3[4].colorN, c1, c2, c3))
 		{
 			switch (pos) {
 				case 0:
@@ -662,8 +709,8 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
+			console.log("alg8_" + pos);
 		}
-
 	}
 
 	private check2(num: number, check1: number, check2: number)

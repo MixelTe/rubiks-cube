@@ -11,6 +11,8 @@ export class CubeRotator
 	private solveStage: 0 | 1 = 0;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
+	private DEV_log = true;
+	private DEV_stageColor = "lightblue";
 
 	constructor(cube: Cube)
 	{
@@ -91,18 +93,22 @@ export class CubeRotator
 		const tiles4 = this.cube.sides[4].tiles;
 		if (tiles0[1].colorN != 0 || tiles4[5].colorN != 4)
 		{
+			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(4, 0);
 		}
 		else if (tiles0[3].colorN != 0 || tiles1[7].colorN != 1)
 		{
+			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(1, 1);
 		}
 		else if (tiles0[5].colorN != 0 || tiles2[1].colorN != 2)
 		{
+			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(2, 2);
 		}
 		else if (tiles0[7].colorN != 0 || tiles3[3].colorN != 3)
 		{
+			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(3, 3);
 		}
 		else
@@ -146,7 +152,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg1_" + pos);
+			this.log("alg1_" + pos);
 		}
 		else if (this.check2(tiles5[3].colorN, 0, color) && this.check2(tiles1[3].colorN, 0, color))
 		{
@@ -174,7 +180,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg2_" + pos);
+			this.log("alg2_" + pos);
 		}
 		else if (this.check2(tiles5[5].colorN, 0, color) && this.check2(tiles4[1].colorN, 0, color))
 		{
@@ -202,7 +208,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg3_" + pos);
+			this.log("alg3_" + pos);
 		}
 		else if (this.check2(tiles5[7].colorN, 0, color) && this.check2(tiles3[7].colorN, 0, color))
 		{
@@ -230,7 +236,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg4_" + pos);
+			this.log("alg4_" + pos);
 		}
 		//on side
 		else if (this.check2(tiles4[3].colorN, 0, color) && this.check2(tiles1[1].colorN, 0, color))
@@ -255,7 +261,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg5_" + pos);
+			this.log("alg5_" + pos);
 		}
 		else if (this.check2(tiles4[7].colorN, 0, color) && this.check2(tiles3[1].colorN, 0, color))
 		{
@@ -279,7 +285,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg6_" + pos);
+			this.log("alg6_" + pos);
 		}
 		else if (this.check2(tiles2[3].colorN, 0, color) && this.check2(tiles1[5].colorN, 0, color))
 		{
@@ -303,7 +309,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg7_" + pos);
+			this.log("alg7_" + pos);
 		}
 		else if (this.check2(tiles2[7].colorN, 0, color) && this.check2(tiles3[5].colorN, 0, color))
 		{
@@ -327,7 +333,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg8_" + pos);
+			this.log("alg8_" + pos);
 		}
 		//on top
 		else if (this.check2(tiles0[3].colorN, 0, color) && this.check2(tiles1[7].colorN, 0, color))
@@ -363,7 +369,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg9_" + pos);
+			this.log("alg9_" + pos);
 		}
 		else if (this.check2(tiles0[5].colorN, 0, color) && this.check2(tiles2[1].colorN, 0, color))
 		{
@@ -398,7 +404,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg10_" + pos);
+			this.log("alg10_" + pos);
 		}
 		else if (this.check2(tiles0[7].colorN, 0, color) && this.check2(tiles3[3].colorN, 0, color))
 		{
@@ -433,7 +439,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg11_" + pos);
+			this.log("alg11_" + pos);
 		}
 		else if (this.check2(tiles0[1].colorN, 0, color) && this.check2(tiles4[5].colorN, 0, color))
 		{
@@ -468,7 +474,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg12_" + pos);
+			this.log("alg12_" + pos);
 		}
 	}
 
@@ -482,18 +488,22 @@ export class CubeRotator
 		const tiles5 = this.cube.sides[5].tiles;
 		if (tiles0[0].colorN != 0 || tiles3[2].colorN != 3 || tiles4[6].colorN != 4)
 		{
+			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube2(0);
 		}
 		else if (tiles0[2].colorN != 0 || tiles4[4].colorN != 4 || tiles1[0].colorN != 1)
 		{
+			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube2(1);
 		}
 		else if (tiles0[4].colorN != 0 || tiles1[6].colorN != 1 || tiles2[2].colorN != 2)
 		{
+			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube2(2);
 		}
 		else if (tiles0[6].colorN != 0 || tiles2[0].colorN != 2 || tiles3[4].colorN != 3)
 		{
+			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube2(3);
 		}
 	}
@@ -544,7 +554,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg1_" + pos);
+			this.log("alg1_" + pos);
 		}
 		else if (this.check3(tiles5[2].colorN, c1, c2, c3) && this.check3(tiles2[4].colorN, c1, c2, c3) && this.check3(tiles1[4].colorN, c1, c2, c3))
 		{
@@ -574,7 +584,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg2_" + pos);
+			this.log("alg2_" + pos);
 		}
 		else if (this.check3(tiles5[4].colorN, c1, c2, c3) && this.check3(tiles1[2].colorN, c1, c2, c3) && this.check3(tiles4[2].colorN, c1, c2, c3))
 		{
@@ -604,7 +614,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg3_" + pos);
+			this.log("alg3_" + pos);
 		}
 		else if (this.check3(tiles5[6].colorN, c1, c2, c3) && this.check3(tiles4[0].colorN, c1, c2, c3) && this.check3(tiles3[0].colorN, c1, c2, c3))
 		{
@@ -634,7 +644,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg4_" + pos);
+			this.log("alg4_" + pos);
 		}
 		//on top
 		else if (this.check3(tiles0[0].colorN, c1, c2, c3) && this.check3(tiles3[2].colorN, c1, c2, c3) && this.check3(tiles4[6].colorN, c1, c2, c3))
@@ -674,7 +684,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg5_" + pos);
+			this.log("alg5_" + pos);
 		}
 		else if (this.check3(tiles0[2].colorN, c1, c2, c3) && this.check3(tiles4[4].colorN, c1, c2, c3) && this.check3(tiles1[0].colorN, c1, c2, c3))
 		{
@@ -713,7 +723,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg6_" + pos);
+			this.log("alg6_" + pos);
 		}
 		else if (this.check3(tiles0[4].colorN, c1, c2, c3) && this.check3(tiles1[6].colorN, c1, c2, c3) && this.check3(tiles2[2].colorN, c1, c2, c3))
 		{
@@ -752,7 +762,7 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg7_" + pos);
+			this.log("alg7_" + pos);
 		}
 		else if (this.check3(tiles0[6].colorN, c1, c2, c3) && this.check3(tiles2[0].colorN, c1, c2, c3) && this.check3(tiles3[4].colorN, c1, c2, c3))
 		{
@@ -791,9 +801,10 @@ export class CubeRotator
 
 				default: throw new Error("switch default");
 			}
-			console.log("alg8_" + pos);
+			this.log("alg8_" + pos);
 		}
 	}
+
 
 	private check2(num: number, check1: number, check2: number)
 	{
@@ -806,6 +817,10 @@ export class CubeRotator
 	private rAlg(side: number, toRight: boolean)
 	{
 		this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
+	}
+	private log(text: string, color = "")
+	{
+		if (this.DEV_log) console.log(`%c${text}`, `color: ${color}`);
 	}
 }
 

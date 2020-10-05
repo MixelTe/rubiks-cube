@@ -26,6 +26,12 @@ export class CubeRotator
 				case "Numpad4": this.cube.rotateSide(3, toRight); stopAll(); break;
 				case "Numpad8": this.cube.rotateSide(4, toRight); stopAll(); break;
 				case "Numpad9": this.cube.rotateSide(5, toRight); stopAll(); break;
+				case "Digit0": this.cube.rotateSide(0, toRight); stopAll(); break;
+				case "Digit1": this.cube.rotateSide(1, toRight); stopAll(); break;
+				case "Digit2": this.cube.rotateSide(2, toRight); stopAll(); break;
+				case "Digit3": this.cube.rotateSide(3, toRight); stopAll(); break;
+				case "Digit4": this.cube.rotateSide(4, toRight); stopAll(); break;
+				case "Digit5": this.cube.rotateSide(5, toRight); stopAll(); break;
 				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; this.rotationAlg = []; break;
 				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; break;
 			}
@@ -635,16 +641,28 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
 					break;
 				case 1:
-
+					this.rAlg(3, false);
+					this.rAlg(1, true);
+					this.rAlg(5, false);
+					this.rAlg(3, true);
+					this.rAlg(1, false);
 					break;
 				case 2:
-
+					this.rAlg(3, false);
+					this.rAlg(2, true);
+					this.rAlg(5, true);
+					this.rAlg(5, true);
+					this.rAlg(2, false);
+					this.rAlg(3, true);
 					break;
 				case 3:
-
+					this.rAlg(4, true);
+					this.rAlg(2, false);
+					this.rAlg(5, true);
+					this.rAlg(2, true);
+					this.rAlg(4, false);
 					break;
 
 				default: throw new Error("switch default");
@@ -655,16 +673,28 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(1, true);
+					this.rAlg(3, false);
+					this.rAlg(5, true);
+					this.rAlg(3, true);
+					this.rAlg(1, false);
 					break;
 				case 1:
-
 					break;
 				case 2:
-
+					this.rAlg(4, false);
+					this.rAlg(2, true);
+					this.rAlg(5, false);
+					this.rAlg(2, false);
+					this.rAlg(4, true);
 					break;
 				case 3:
-
+					this.rAlg(4, false);
+					this.rAlg(3, true);
+					this.rAlg(5, true);
+					this.rAlg(5, true);
+					this.rAlg(3, false);
+					this.rAlg(4, true);
 					break;
 
 				default: throw new Error("switch default");
@@ -675,16 +705,28 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(1, false);
+					this.rAlg(4, true);
+					this.rAlg(5, true);
+					this.rAlg(5, true);
+					this.rAlg(4, false);
+					this.rAlg(1, true);
 					break;
 				case 1:
-
+					this.rAlg(2, true);
+					this.rAlg(4, false);
+					this.rAlg(5, true);
+					this.rAlg(4, true);
+					this.rAlg(2, false);
 					break;
 				case 2:
-
 					break;
 				case 3:
-
+					this.rAlg(1, false);
+					this.rAlg(3, true);
+					this.rAlg(5, false);
+					this.rAlg(3, false);
+					this.rAlg(1, true);
 					break;
 
 				default: throw new Error("switch default");
@@ -695,16 +737,28 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(2, false);
+					this.rAlg(4, true);
+					this.rAlg(5, false);
+					this.rAlg(4, false);
+					this.rAlg(2, true);
 					break;
 				case 1:
-
+					this.rAlg(2, false);
+					this.rAlg(1, true);
+					this.rAlg(5, true);
+					this.rAlg(5, true);
+					this.rAlg(1, false);
+					this.rAlg(2, true);
 					break;
 				case 2:
-
+					this.rAlg(3, true);
+					this.rAlg(1, false);
+					this.rAlg(5, true);
+					this.rAlg(1, true);
+					this.rAlg(3, false);
 					break;
 				case 3:
-
 					break;
 
 				default: throw new Error("switch default");

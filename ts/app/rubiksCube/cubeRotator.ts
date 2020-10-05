@@ -64,6 +64,7 @@ export class CubeRotator
 		{
 			switch (this.solveStage) {
 				case 0: this.solveStage0(); break;
+				case 1: this.solveStage1(); break;
 				default: throw new Error("switch default");
 			}
 		}
@@ -464,9 +465,214 @@ export class CubeRotator
 			console.log("alg12_" + pos);
 		}
 	}
+
+	private solveStage1()
+	{
+		const tiles0 = this.cube.sides[0].tiles;
+		const tiles1 = this.cube.sides[1].tiles;
+		const tiles2 = this.cube.sides[2].tiles;
+		const tiles3 = this.cube.sides[3].tiles;
+		const tiles4 = this.cube.sides[4].tiles;
+		const tiles5 = this.cube.sides[5].tiles;
+		if (tiles0[0].colorN != 0 || tiles3[2].colorN != 3 || tiles4[6].colorN != 4)
+		{
+			this.solveStage1_OneCube2(0);
+		}
+		// if (tiles0[2].colorN != 0 || tiles4[4].colorN != 4 || tiles1[0].colorN != 1)
+		// {
+		// 	this.solveStage1_OneCube2(1);
+		// }
+		// if (tiles0[4].colorN != 0 || tiles1[6].colorN != 1 || tiles2[2].colorN != 2)
+		// {
+		// 	this.solveStage1_OneCube2(2);
+		// }
+		// if (tiles0[6].colorN != 0 || tiles2[0].colorN != 2 || tiles3[4].colorN != 3)
+		// {
+		// 	this.solveStage1_OneCube2(3);
+		// }
+	}
+	public solveStage1_OneCube2(pos: 0 | 1 | 2 | 3)
+	{
+		let c1, c2, c3;
+		switch (pos) {
+			case 0: c1 = 0; c2 = 3; c3 = 4; break;
+			case 1: c1 = 0; c2 = 4; c3 = 1; break;
+			case 2: c1 = 0; c2 = 1; c3 = 2; break;
+			case 3: c1 = 0; c2 = 2; c3 = 3; break;
+			default: throw new Error("switch default");
+		}
+
+		const tiles0 = this.cube.sides[0].tiles;
+		const tiles1 = this.cube.sides[1].tiles;
+		const tiles2 = this.cube.sides[2].tiles;
+		const tiles3 = this.cube.sides[3].tiles;
+		const tiles4 = this.cube.sides[4].tiles;
+		const tiles5 = this.cube.sides[5].tiles;
+
+		//on bottom
+		if (this.check3(tiles5[0].colorN, c1, c2, c3) || this.check3(tiles3[6].colorN, c1, c2, c3) || this.check3(tiles2[6].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		else if (this.check3(tiles5[2].colorN, c1, c2, c3) || this.check3(tiles2[4].colorN, c1, c2, c3) || this.check3(tiles1[4].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		else if (this.check3(tiles5[4].colorN, c1, c2, c3) || this.check3(tiles1[2].colorN, c1, c2, c3) || this.check3(tiles4[2].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		else if (this.check3(tiles5[6].colorN, c1, c2, c3) || this.check3(tiles4[0].colorN, c1, c2, c3) || this.check3(tiles3[0].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		//on top
+		else if (this.check3(tiles0[0].colorN, c1, c2, c3) || this.check3(tiles3[2].colorN, c1, c2, c3) || this.check3(tiles4[6].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		else if (this.check3(tiles0[2].colorN, c1, c2, c3) || this.check3(tiles4[4].colorN, c1, c2, c3) || this.check3(tiles1[0].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		else if (this.check3(tiles0[4].colorN, c1, c2, c3) || this.check3(tiles1[6].colorN, c1, c2, c3) || this.check3(tiles2[2].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+		else if (this.check3(tiles0[6].colorN, c1, c2, c3) || this.check3(tiles2[0].colorN, c1, c2, c3) || this.check3(tiles3[4].colorN, c1, c2, c3))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+		}
+
+	}
+
 	private check2(num: number, check1: number, check2: number)
 	{
 		return (num == check1) || (num == check2);
+	}
+	private check3(num: number, check1: number, check2: number, check3: number)
+	{
+		return (num == check1) || (num == check2) || (num == check3);
 	}
 	private rAlg(side: number, toRight: boolean)
 	{

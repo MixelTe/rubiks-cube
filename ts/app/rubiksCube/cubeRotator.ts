@@ -8,7 +8,7 @@ export class CubeRotator
 	private mixPastSide = 0;
 	private animMix = false;
 	private solveNow = false;
-	private solveStage: 0 = 0;
+	private solveStage: 0 | 1 = 0;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
 
@@ -74,6 +74,7 @@ export class CubeRotator
 			// if (this.rotationAlg.length == 0) this.solveNow = false;
 		}
 	}
+
 	private solveStage0()
 	{
 		const tiles0 = this.cube.sides[0].tiles;
@@ -83,120 +84,26 @@ export class CubeRotator
 		const tiles4 = this.cube.sides[4].tiles;
 		if (tiles0[1].colorN != 0 || tiles4[5].colorN != 4)
 		{
-			this.solveStage0_OneCube2(4, 0);
+			this.solveStage0_OneCube(4, 0);
 		}
 		else if (tiles0[3].colorN != 0 || tiles1[7].colorN != 1)
 		{
-			this.solveStage0_OneCube2(1, 1);
+			this.solveStage0_OneCube(1, 1);
 		}
 		else if (tiles0[5].colorN != 0 || tiles2[1].colorN != 2)
 		{
-			this.solveStage0_OneCube2(2, 2);
+			this.solveStage0_OneCube(2, 2);
 		}
 		else if (tiles0[7].colorN != 0 || tiles3[3].colorN != 3)
 		{
-			this.solveStage0_OneCube2(3, 3);
+			this.solveStage0_OneCube(3, 3);
+		}
+		else
+		{
+			this.solveStage = 1;
 		}
 	}
-	private solveStage0_OneCube()
-	{
-		const tiles0 = this.cube.sides[0].tiles;
-		const tiles1 = this.cube.sides[1].tiles;
-		const tiles2 = this.cube.sides[2].tiles;
-		const tiles3 = this.cube.sides[3].tiles;
-		const tiles4 = this.cube.sides[4].tiles;
-		const tiles5 = this.cube.sides[5].tiles;
-
-		if (tiles0[1].colorN == 4 && tiles4[5].colorN == 0)
-		{
-			this.rAlg(4, false);
-			this.rAlg(4, false);
-			this.rAlg(5, true);
-			this.rAlg(3, true);
-			this.rAlg(4, false);
-			this.rAlg(3, true);
-			console.log("alg0");
-		}//on bottom
-		else if (this.check2(tiles5[1].colorN, 0, 4) && this.check2(tiles2[5].colorN, 0, 4))
-		{
-			this.rAlg(5, false);
-			this.rAlg(5, false);
-			this.rAlg(4, false);
-			this.rAlg(4, false);
-			console.log("alg1");
-		}
-		else if (this.check2(tiles5[3].colorN, 0, 4) && this.check2(tiles1[3].colorN, 0, 4))
-		{
-			this.rAlg(5, true);
-			this.rAlg(4, false);
-			this.rAlg(4, false);
-			console.log("alg2");
-		}
-		else if (this.check2(tiles5[5].colorN, 0, 4) && this.check2(tiles4[1].colorN, 0, 4))
-		{
-			this.rAlg(4, false);
-			this.rAlg(4, false);
-			console.log("alg3");
-		}
-		else if (this.check2(tiles5[7].colorN, 0, 4) && this.check2(tiles3[7].colorN, 0, 4))
-		{
-			this.rAlg(5, false);
-			this.rAlg(4, false);
-			this.rAlg(4, false);
-			console.log("alg4");
-		}//on side
-		else if (this.check2(tiles4[3].colorN, 0, 4) && this.check2(tiles1[1].colorN, 0, 4))
-		{
-			this.rAlg(4, true);
-			console.log("alg5");
-		}
-		else if (this.check2(tiles4[7].colorN, 0, 4) && this.check2(tiles3[1].colorN, 0, 4))
-		{
-			this.rAlg(4, false);
-			console.log("alg6");
-		}
-		else if (this.check2(tiles2[3].colorN, 0, 4) && this.check2(tiles1[5].colorN, 0, 4))
-		{
-			this.rAlg(2, true);
-			this.rAlg(5, true);
-			this.rAlg(5, true);
-			this.rAlg(4, true);
-			this.rAlg(4, true);
-			console.log("alg7");
-		}
-		else if (this.check2(tiles2[7].colorN, 0, 4) && this.check2(tiles3[5].colorN, 0, 4))
-		{
-			this.rAlg(2, false);
-			this.rAlg(5, true);
-			this.rAlg(5, true);
-			this.rAlg(4, true);
-			this.rAlg(4, true);
-			console.log("alg7");
-		}//on top
-		else if (this.check2(tiles0[3].colorN, 0, 4) && this.check2(tiles1[7].colorN, 0, 4))
-		{
-			this.rAlg(1, true);
-			this.rAlg(4, true);
-			console.log("alg8");
-		}
-		else if (this.check2(tiles0[5].colorN, 0, 4) && this.check2(tiles2[1].colorN, 0, 4))
-		{
-			this.rAlg(2, true);
-			this.rAlg(2, true);
-			this.rAlg(5, true);
-			this.rAlg(5, true);
-			this.rAlg(4, true);
-			this.rAlg(4, true);
-			console.log("alg9");
-		}
-		else if (this.check2(tiles0[7].colorN, 0, 4) && this.check2(tiles3[3].colorN, 0, 4))
-		{
-			this.rAlg(3, false);
-			this.rAlg(4, false);
-			console.log("alg10");
-		}
-	}
-	private solveStage0_OneCube2(color: 0 | 1 | 2 | 3 | 4 | 5, pos: 0 | 1 | 2 | 3)
+	private solveStage0_OneCube(color: 0 | 1 | 2 | 3 | 4 | 5, pos: 0 | 1 | 2 | 3)
 	{
 		const tiles0 = this.cube.sides[0].tiles;
 		const tiles1 = this.cube.sides[1].tiles;

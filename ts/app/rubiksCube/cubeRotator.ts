@@ -8,7 +8,7 @@ export class CubeRotator
 	private mixPastSide = 0;
 	private animMix = false;
 	private solveNow = false;
-	private solveStage: 0 | 1 = 0;
+	private solveStage: 0 | 1 | 2 = 0;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
 	private DEV_log = true;
@@ -73,6 +73,7 @@ export class CubeRotator
 			switch (this.solveStage) {
 				case 0: this.solveStage0(); break;
 				case 1: this.solveStage1(); break;
+				case 2: this.solveStage2(); break;
 				default: throw new Error("switch default");
 			}
 		}
@@ -499,6 +500,10 @@ export class CubeRotator
 		{
 			this.solveStage1_OneCube(3);
 		}
+		else
+		{
+			this.solveStage = 2;
+		}
 	}
 	public solveStage1_OneCube(pos: 0 | 1 | 2 | 3)
 	{
@@ -792,6 +797,213 @@ export class CubeRotator
 						this.rAlg(3, false);
 						this.rAlg(5, false);
 					}
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg8_" + pos);
+		}
+	}
+
+	private solveStage2()
+	{
+		const tiles1 = this.cube.sides[1].tiles;
+		const tiles2 = this.cube.sides[2].tiles;
+		const tiles3 = this.cube.sides[3].tiles;
+		const tiles4 = this.cube.sides[4].tiles;
+
+		if (tiles1[5].colorN != 1 || tiles2[3].colorN != 2)
+		{
+			this.solveStage2_OneCube(0);
+		}
+		// if (tiles2[7].colorN != 2 || tiles3[5].colorN != 3)
+		// {
+		// 	this.solveStage2_OneCube(1);
+		// }
+		// if (tiles3[1].colorN != 3 || tiles4[7].colorN != 4)
+		// {
+		// 	this.solveStage2_OneCube(2);
+		// }
+		// if (tiles4[3].colorN != 4 || tiles1[1].colorN != 1)
+		// {
+		// 	this.solveStage2_OneCube(3);
+		// }
+	}
+	public solveStage2_OneCube(pos: 0 | 1 | 2 | 3)
+	{
+		this.log("stage2:", this.DEV_stageColor);
+
+		let c1, c2;
+		switch (pos) {
+			case 0: c1 = 1; c2 = 2; break;
+			case 1: c1 = 2; c2 = 3; break;
+			case 2: c1 = 3; c2 = 4; break;
+			case 3: c1 = 4; c2 = 1; break;
+			default: throw new Error("switch default");
+		}
+
+		const tiles1 = this.cube.sides[1].tiles;
+		const tiles2 = this.cube.sides[2].tiles;
+		const tiles3 = this.cube.sides[3].tiles;
+		const tiles4 = this.cube.sides[4].tiles;
+		const tiles5 = this.cube.sides[5].tiles;
+
+		//on bottom
+		if (this.check2(tiles5[1].colorN, c1, c2) && this.check2(tiles2[5].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg1_" + pos);
+		}
+		else if (this.check2(tiles5[3].colorN, c1, c2) && this.check2(tiles1[3].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg2_" + pos);
+		}
+		else if (this.check2(tiles5[5].colorN, c1, c2) && this.check2(tiles4[1].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg3_" + pos);
+		}
+		else if (this.check2(tiles5[7].colorN, c1, c2) && this.check2(tiles3[7].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg4_" + pos);
+		}
+		//on side
+		else if (this.check2(tiles1[5].colorN, c1, c2) && this.check2(tiles2[3].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg5_" + pos);
+		}
+		else if (this.check2(tiles2[7].colorN, c1, c2) && this.check2(tiles3[5].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg6_" + pos);
+		}
+		else if (this.check2(tiles3[1].colorN, c1, c2) && this.check2(tiles4[7].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+
+				default: throw new Error("switch default");
+			}
+			this.log("alg7_" + pos);
+		}
+		else if (this.check2(tiles4[3].colorN, c1, c2) && this.check2(tiles1[1].colorN, c1, c2))
+		{
+			switch (pos) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
 					break;
 
 				default: throw new Error("switch default");

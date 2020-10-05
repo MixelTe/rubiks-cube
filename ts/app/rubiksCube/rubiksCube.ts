@@ -32,7 +32,7 @@ export class RubiksCube
 		this.scene = new THREE.Scene();
 		this.scene.background = new THREE.Color(0xAAAAAA);
 
-		new CameraControl(canvas, this.camera, this.scene, { showAxis: true, moveActive: false, zoomActive: false, rotation: "side" });
+		new CameraControl(canvas, this.camera, this.scene, { moveActive: false, minZoom: 30, maxZoom: 100, rotation: "side" });
 	}
 
 	public start()

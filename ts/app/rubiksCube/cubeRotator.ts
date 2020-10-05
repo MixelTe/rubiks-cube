@@ -506,7 +506,7 @@ export class CubeRotator
 			this.cube.update();
 		}
 	}
-	public solveStage1_OneCube(pos: 0 | 1 | 2 | 3)
+	private solveStage1_OneCube(pos: 0 | 1 | 2 | 3)
 	{
 		this.log("stage1:", this.DEV_stageColor);
 
@@ -830,7 +830,7 @@ export class CubeRotator
 			this.solveStage2_OneCube(3);
 		}
 	}
-	public solveStage2_OneCube(pos: 0 | 1 | 2 | 3)
+	private solveStage2_OneCube(pos: 0 | 1 | 2 | 3)
 	{
 		this.log("stage2:", this.DEV_stageColor);
 

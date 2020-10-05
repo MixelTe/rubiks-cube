@@ -8,7 +8,7 @@ export class CubeRotator
 	private mixPastSide = 0;
 	private animMix = false;
 	private solveNow = false;
-	private solveStage: 0 | 1 = 1;
+	private solveStage: 0 | 1 = 0;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
 
@@ -484,18 +484,18 @@ export class CubeRotator
 		{
 			this.solveStage1_OneCube2(0);
 		}
-		// if (tiles0[2].colorN != 0 || tiles4[4].colorN != 4 || tiles1[0].colorN != 1)
-		// {
-		// 	this.solveStage1_OneCube2(1);
-		// }
-		// if (tiles0[4].colorN != 0 || tiles1[6].colorN != 1 || tiles2[2].colorN != 2)
-		// {
-		// 	this.solveStage1_OneCube2(2);
-		// }
-		// if (tiles0[6].colorN != 0 || tiles2[0].colorN != 2 || tiles3[4].colorN != 3)
-		// {
-		// 	this.solveStage1_OneCube2(3);
-		// }
+		else if (tiles0[2].colorN != 0 || tiles4[4].colorN != 4 || tiles1[0].colorN != 1)
+		{
+			this.solveStage1_OneCube2(1);
+		}
+		else if (tiles0[4].colorN != 0 || tiles1[6].colorN != 1 || tiles2[2].colorN != 2)
+		{
+			this.solveStage1_OneCube2(2);
+		}
+		else if (tiles0[6].colorN != 0 || tiles2[0].colorN != 2 || tiles3[4].colorN != 3)
+		{
+			this.solveStage1_OneCube2(3);
+		}
 	}
 	public solveStage1_OneCube2(pos: 0 | 1 | 2 | 3)
 	{
@@ -641,6 +641,13 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
+					for (let i = 0; i < 2; i++)
+					{
+						this.rAlg(4, true);
+						this.rAlg(5, true);
+						this.rAlg(4, false);
+						this.rAlg(5, false);
+					}
 					break;
 				case 1:
 					this.rAlg(3, false);
@@ -680,6 +687,13 @@ export class CubeRotator
 					this.rAlg(1, false);
 					break;
 				case 1:
+					for (let i = 0; i < 2; i++)
+					{
+						this.rAlg(1, true);
+						this.rAlg(5, true);
+						this.rAlg(1, false);
+						this.rAlg(5, false);
+					}
 					break;
 				case 2:
 					this.rAlg(4, false);
@@ -720,6 +734,13 @@ export class CubeRotator
 					this.rAlg(2, false);
 					break;
 				case 2:
+					for (let i = 0; i < 2; i++)
+					{
+						this.rAlg(2, true);
+						this.rAlg(5, true);
+						this.rAlg(2, false);
+						this.rAlg(5, false);
+					}
 					break;
 				case 3:
 					this.rAlg(1, false);
@@ -759,6 +780,13 @@ export class CubeRotator
 					this.rAlg(3, false);
 					break;
 				case 3:
+					for (let i = 0; i < 2; i++)
+					{
+						this.rAlg(3, true);
+						this.rAlg(5, true);
+						this.rAlg(3, false);
+						this.rAlg(5, false);
+					}
 					break;
 
 				default: throw new Error("switch default");

@@ -93,22 +93,18 @@ export class CubeRotator
 		const tiles4 = this.cube.sides[4].tiles;
 		if (tiles0[1].colorN != 0 || tiles4[5].colorN != 4)
 		{
-			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(4, 0);
 		}
 		else if (tiles0[3].colorN != 0 || tiles1[7].colorN != 1)
 		{
-			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(1, 1);
 		}
 		else if (tiles0[5].colorN != 0 || tiles2[1].colorN != 2)
 		{
-			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(2, 2);
 		}
 		else if (tiles0[7].colorN != 0 || tiles3[3].colorN != 3)
 		{
-			this.log("stage0:", this.DEV_stageColor);
 			this.solveStage0_OneCube(3, 3);
 		}
 		else
@@ -118,6 +114,8 @@ export class CubeRotator
 	}
 	private solveStage0_OneCube(color: 0 | 1 | 2 | 3 | 4 | 5, pos: 0 | 1 | 2 | 3)
 	{
+		this.log("stage0:", this.DEV_stageColor);
+
 		const tiles0 = this.cube.sides[0].tiles;
 		const tiles1 = this.cube.sides[1].tiles;
 		const tiles2 = this.cube.sides[2].tiles;
@@ -487,27 +485,25 @@ export class CubeRotator
 		const tiles4 = this.cube.sides[4].tiles;
 		if (tiles0[0].colorN != 0 || tiles3[2].colorN != 3 || tiles4[6].colorN != 4)
 		{
-			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube(0);
 		}
 		else if (tiles0[2].colorN != 0 || tiles4[4].colorN != 4 || tiles1[0].colorN != 1)
 		{
-			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube(1);
 		}
 		else if (tiles0[4].colorN != 0 || tiles1[6].colorN != 1 || tiles2[2].colorN != 2)
 		{
-			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube(2);
 		}
 		else if (tiles0[6].colorN != 0 || tiles2[0].colorN != 2 || tiles3[4].colorN != 3)
 		{
-			this.log("stage1:", this.DEV_stageColor);
 			this.solveStage1_OneCube(3);
 		}
 	}
 	public solveStage1_OneCube(pos: 0 | 1 | 2 | 3)
 	{
+		this.log("stage1:", this.DEV_stageColor);
+
 		let c1, c2, c3;
 		switch (pos) {
 			case 0: c1 = 0; c2 = 3; c3 = 4; break;

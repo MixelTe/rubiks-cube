@@ -35,7 +35,7 @@ export class CubeRotator
 				case "Digit4": this.cube.rotateSide(4, toRight); stopAll(); break;
 				case "Digit5": this.cube.rotateSide(5, toRight); stopAll(); break;
 				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; this.rotationAlg = []; break;
-				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; break;
+				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; this.solveStage = 0; break;
 			}
 		});
 	}
@@ -503,6 +503,7 @@ export class CubeRotator
 		else
 		{
 			this.solveStage = 2;
+			this.cube.update();
 		}
 	}
 	public solveStage1_OneCube(pos: 0 | 1 | 2 | 3)
@@ -816,18 +817,18 @@ export class CubeRotator
 		{
 			this.solveStage2_OneCube(0);
 		}
-		// if (tiles2[7].colorN != 2 || tiles3[5].colorN != 3)
-		// {
-		// 	this.solveStage2_OneCube(1);
-		// }
-		// if (tiles3[1].colorN != 3 || tiles4[7].colorN != 4)
-		// {
-		// 	this.solveStage2_OneCube(2);
-		// }
-		// if (tiles4[3].colorN != 4 || tiles1[1].colorN != 1)
-		// {
-		// 	this.solveStage2_OneCube(3);
-		// }
+		else if (tiles2[7].colorN != 2 || tiles3[5].colorN != 3)
+		{
+			this.solveStage2_OneCube(1);
+		}
+		else if (tiles3[1].colorN != 3 || tiles4[7].colorN != 4)
+		{
+			this.solveStage2_OneCube(2);
+		}
+		else if (tiles4[3].colorN != 4 || tiles1[1].colorN != 1)
+		{
+			this.solveStage2_OneCube(3);
+		}
 	}
 	public solveStage2_OneCube(pos: 0 | 1 | 2 | 3)
 	{
@@ -853,16 +854,20 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(5, true);
+					this.solveStage2_CubeToSide(1, 2);
 					break;
 				case 1:
-
+					this.solveStage2_CubeToSide(2, 3);
 					break;
 				case 2:
-
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(3, 4);
 					break;
 				case 3:
-
+					this.rAlg(5, false);
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(4, 1);
 					break;
 
 				default: throw new Error("switch default");
@@ -873,16 +878,20 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.solveStage2_CubeToSide(1, 2);
 					break;
 				case 1:
-
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(2, 3);
 					break;
 				case 2:
-
+					this.rAlg(5, false);
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(3, 4);
 					break;
 				case 3:
-
+					this.rAlg(5, true);
+					this.solveStage2_CubeToSide(4, 1);
 					break;
 
 				default: throw new Error("switch default");
@@ -893,16 +902,20 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(1, 2);
 					break;
 				case 1:
-
+					this.rAlg(5, false);
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(2, 3);
 					break;
 				case 2:
-
+					this.rAlg(5, true);
+					this.solveStage2_CubeToSide(3, 4);
 					break;
 				case 3:
-
+					this.solveStage2_CubeToSide(4, 1);
 					break;
 
 				default: throw new Error("switch default");
@@ -913,16 +926,20 @@ export class CubeRotator
 		{
 			switch (pos) {
 				case 0:
-
+					this.rAlg(5, false);
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(1, 2);
 					break;
 				case 1:
-
+					this.rAlg(5, true);
+					this.solveStage2_CubeToSide(2, 3);
 					break;
 				case 2:
-
+					this.solveStage2_CubeToSide(3, 4);
 					break;
 				case 3:
-
+					this.rAlg(5, false);
+					this.solveStage2_CubeToSide(4, 1);
 					break;
 
 				default: throw new Error("switch default");
@@ -932,84 +949,35 @@ export class CubeRotator
 		//on side
 		else if (this.check2(tiles1[5].colorN, c1, c2) && this.check2(tiles2[3].colorN, c1, c2))
 		{
-			switch (pos) {
-				case 0:
-
-					break;
-				case 1:
-
-					break;
-				case 2:
-
-					break;
-				case 3:
-
-					break;
-
-				default: throw new Error("switch default");
-			}
+			this.solveStage2_CubeToSide(1, 2);
 			this.log("alg5_" + pos);
 		}
 		else if (this.check2(tiles2[7].colorN, c1, c2) && this.check2(tiles3[5].colorN, c1, c2))
 		{
-			switch (pos) {
-				case 0:
-
-					break;
-				case 1:
-
-					break;
-				case 2:
-
-					break;
-				case 3:
-
-					break;
-
-				default: throw new Error("switch default");
-			}
+			this.solveStage2_CubeToSide(2, 3);
 			this.log("alg6_" + pos);
 		}
 		else if (this.check2(tiles3[1].colorN, c1, c2) && this.check2(tiles4[7].colorN, c1, c2))
 		{
-			switch (pos) {
-				case 0:
-
-					break;
-				case 1:
-
-					break;
-				case 2:
-
-					break;
-				case 3:
-
-					break;
-
-				default: throw new Error("switch default");
-			}
+			this.solveStage2_CubeToSide(3, 4);
 			this.log("alg7_" + pos);
 		}
 		else if (this.check2(tiles4[3].colorN, c1, c2) && this.check2(tiles1[1].colorN, c1, c2))
 		{
-			switch (pos) {
-				case 0:
-
-					break;
-				case 1:
-
-					break;
-				case 2:
-
-					break;
-				case 3:
-
-					break;
-
-				default: throw new Error("switch default");
-			}
+			this.solveStage2_CubeToSide(4, 1);
 			this.log("alg8_" + pos);
 		}
+	}
+	private solveStage2_CubeToSide(frontSide: number, leftSide: number)
+	{
+		this.rAlg(5, true);
+		this.rAlg(leftSide, true);
+		this.rAlg(5, false);
+		this.rAlg(leftSide, false);
+		this.rAlg(5, false);
+		this.rAlg(frontSide, false);
+		this.rAlg(5, true);
+		this.rAlg(frontSide, true);
 	}
 
 
@@ -1023,7 +991,8 @@ export class CubeRotator
 	}
 	private rAlg(side: number, toRight: boolean)
 	{
-		this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
+		// this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
+		this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 2 ? this.animSolve : false, this.cube));
 	}
 	private log(text: string, color = "")
 	{

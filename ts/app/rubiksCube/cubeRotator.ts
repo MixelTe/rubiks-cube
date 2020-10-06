@@ -11,7 +11,16 @@ export class CubeRotator
 	private solveStage: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
-	private DEV_log = true;
+
+	public get DEVMode(): boolean {
+		return this.DEV_Mode;
+	}
+	public set DEVMode(v: boolean) {
+		this.DEV_Mode = v;
+		this.DEV_log = v;
+	}
+	private DEV_Mode = false;
+	private DEV_log = false;
 	private DEV_stageColor = "lightblue";
 
 	constructor(cube: Cube)
@@ -35,7 +44,7 @@ export class CubeRotator
 				case "Digit3": this.cube.rotateSide(3, toRight); stopAll(); break;
 				case "Digit4": this.cube.rotateSide(4, toRight); stopAll(); break;
 				case "Digit5": this.cube.rotateSide(5, toRight); stopAll(); break;
-				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; if (!this.animMix) this.cube.update(); break;
+				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; if (!this.animMix && this.DEV_Mode) this.cube.update(); break;
 				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; this.solveStage = 0; this.rotationAlg = []; break;
 			}
 		});
@@ -46,11 +55,24 @@ export class CubeRotator
 		if (this.mixNow && this.cube.animEnded())
 		{
 			this.mixOne();
-			// if (!this.animMix) this.cube.update();
+			if (!this.animMix && !this.DEV_Mode) this.cube.update();
 		}
 		if (this.solveNow && !this.mixNow && this.cube.animEnded())
 		{
-			this.solveStep();
+			if (this.DEV_Mode) this.solveStep();
+			else
+			{
+				try
+				{
+					this.solveStep();
+				}
+				catch
+				{
+					console.error("solve Error");
+					this.solveNow = false;
+					this.solveStage = 0;
+				}
+			}
 			if (!this.animSolve) this.cube.update();
 		}
 	}
@@ -1339,8 +1361,8 @@ export class CubeRotator
 	}
 	private rAlg(side: number, toRight: boolean)
 	{
-		// this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
-		this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 6 ? this.animSolve : false, this.cube));
+		this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
+		// this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 6 ? this.animSolve : false, this.cube));
 	}
 	private log(text: string, color = "")
 	{

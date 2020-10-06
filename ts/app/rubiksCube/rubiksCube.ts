@@ -19,6 +19,7 @@ export class RubiksCube
 	{
 		this.canvas = canvas;
 		this.cubeRotator = new CubeRotator(this.cube);
+		// this.cubeRotator.DEVMode = true;
 
 		this.renderer = new THREE.WebGLRenderer({ canvas });
 

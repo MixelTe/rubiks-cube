@@ -24,7 +24,7 @@ export class Cube
 	private cubes: OneCube[] = [];
 	private font: THREE.TextGeometryParameters | null = null;
 
-	constructor()
+	constructor(DEVMode = false)
 	{
 		this.sides[0].setSides(this.sides[4], this.sides[1], this.sides[2], this.sides[3]);
 		this.sides[1].setSides(this.sides[4], this.sides[5], this.sides[2], this.sides[0]);
@@ -44,17 +44,20 @@ export class Cube
 			}
 		}
 
-		const loader = new THREE.FontLoader();
-		loader.load('../ts/node_modules/three/examples/fonts/helvetiker_regular.typeface.json', (font) =>
+		if (DEVMode)
 		{
-			this.font = <THREE.TextGeometryParameters>{
-				font: font,
-				size: 1,
-				height: 0.1,
-				curveSegments: 12,
-				bevelEnabled: false,
-			};
-		});
+			const loader = new THREE.FontLoader();
+			loader.load('../ts/node_modules/three/examples/fonts/helvetiker_regular.typeface.json', (font) =>
+			{
+				this.font = <THREE.TextGeometryParameters>{
+					font: font,
+					size: 1,
+					height: 0.1,
+					curveSegments: 12,
+					bevelEnabled: false,
+				};
+			});
+		}
 	}
 
 	public create(parent: Object3D)

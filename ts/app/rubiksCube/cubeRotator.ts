@@ -34,8 +34,8 @@ export class CubeRotator
 				case "Digit3": this.cube.rotateSide(3, toRight); stopAll(); break;
 				case "Digit4": this.cube.rotateSide(4, toRight); stopAll(); break;
 				case "Digit5": this.cube.rotateSide(5, toRight); stopAll(); break;
-				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; this.rotationAlg = []; break;
-				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; this.solveStage = 0; break;
+				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; break;
+				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; this.solveStage = 0; this.rotationAlg = []; break;
 			}
 		});
 	}
@@ -75,7 +75,7 @@ export class CubeRotator
 				case 1: this.solveStage1(); break;
 				case 2: this.solveStage2(); break;
 				case 3: this.solveStage3(); break;
-				case 4:  break;
+				case 4: this.solveStage4(); break;
 				default: throw new Error("switch default");
 			}
 		}
@@ -1032,6 +1032,7 @@ export class CubeRotator
 		else
 		{
 			this.solveStage = 4;
+			this.cube.update();
 		}
 	}
 	private solveStage3_SwapCubes(frontSide: number, rightSide: number)
@@ -1045,6 +1046,72 @@ export class CubeRotator
 		this.rAlg(frontSide, false);
 	}
 
+	private solveStage4()
+	{
+		const tiles5 = this.cube.sides[5].tiles;
+
+		this.log("stage4:", this.DEV_stageColor);
+		if (tiles5[1].colorN != 5)
+		{
+			if (tiles5[3].colorN != 5)
+			{
+				this.solveStage4_SwapCubes(2, 1, false);
+				this.log("alg1_0");
+			}
+			else if (tiles5[5].colorN != 5)
+			{
+				this.solveStage4_SwapCubes(2, 2, false);
+				this.log("alg1_1");
+			}
+			else
+			{
+				this.solveStage4_SwapCubes(2, 1, true);
+				this.log("alg1_2");
+			}
+		}
+		else if (tiles5[3].colorN != 5)
+		{
+			if (tiles5[5].colorN != 5)
+			{
+				this.solveStage4_SwapCubes(1, 1, false);
+				this.log("alg2_0");
+			}
+			else
+			{
+				this.solveStage4_SwapCubes(1, 2, true);
+				this.log("alg2_1");
+			}
+		}
+		else if (tiles5[7].colorN != 5)
+		{
+			this.solveStage4_SwapCubes(4, 1, false);
+			this.log("alg3_0");
+		}
+	}
+	private solveStage4_SwapCubes(frontSide: number, rotate5: number, toRight5: boolean)
+	{
+		const f = () =>
+		{
+			for (let i = 0; i < 4; i++)
+			{
+				this.rAlg(frontSide, true);
+				this.rAlg(5, true);
+				this.rAlg(0, false);
+				frontSide--;
+				frontSide = (frontSide + 3) % 4 + 1;
+			}
+		}
+		f();
+		for (let i = 0; i < rotate5; i++) {
+			this.rAlg(5, toRight5);
+		}
+		f();
+		for (let i = 0; i < rotate5; i++) {
+			this.rAlg(5, !toRight5);
+		}
+	}
+
+
 	private check2(num: number, check1: number, check2: number)
 	{
 		return (num == check1) || (num == check2);
@@ -1056,7 +1123,7 @@ export class CubeRotator
 	private rAlg(side: number, toRight: boolean)
 	{
 		// this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
-		this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 3 ? this.animSolve : false, this.cube));
+		this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 4 ? this.animSolve : false, this.cube));
 	}
 	private log(text: string, color = "")
 	{

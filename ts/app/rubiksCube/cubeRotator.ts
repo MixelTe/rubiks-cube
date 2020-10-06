@@ -494,6 +494,7 @@ export class CubeRotator
 			}
 			this.log("alg12_" + pos);
 		}
+		else throw new Error("solve Error");
 	}
 
 	private solveStage1()
@@ -831,6 +832,7 @@ export class CubeRotator
 			}
 			this.log("alg8_" + pos);
 		}
+		else throw new Error("solve Error");
 	}
 
 	private solveStage2()
@@ -1003,6 +1005,7 @@ export class CubeRotator
 			this.solveStage2_CubeToSide(4, 1);
 			this.log("alg8_" + pos);
 		}
+		else throw new Error("solve Error");
 	}
 	private solveStage2_CubeToSide(frontSide: number, leftSide: number)
 	{
@@ -1041,6 +1044,7 @@ export class CubeRotator
 			{
 				this.rAlg(5, true);
 			}
+			else throw new Error("solve Error");
 		}
 		else if (!(this.check2(tiles5[3].colorN, 1, 5) && this.check2(tiles1[3].colorN, 1, 5)))
 		{
@@ -1054,6 +1058,7 @@ export class CubeRotator
 				this.solveStage3_SwapCubes(4, 1);
 				this.solveStage3_SwapCubes(1, 2);
 			}
+			else throw new Error("solve Error");
 		}
 		else if (!(this.check2(tiles5[5].colorN, 4, 5) && this.check2(tiles4[1].colorN, 4, 5)))
 		{
@@ -1173,6 +1178,7 @@ export class CubeRotator
 				this.solveStage5_SwapCubes(2);
 				this.log("alg1_2");
 			}
+			else throw new Error("solve Error");
 		}
 		else if (!(this.check3(tiles5[2].colorN, 5, 1, 2) && this.check3(tiles1[4].colorN, 5, 1, 2) && this.check3(tiles2[4].colorN, 5, 1, 2)))
 		{
@@ -1291,7 +1297,8 @@ export class CubeRotator
 		}
 		else
 		{
-			this.solveNow = false;
+			if (this.checkCube()) this.solveNow = false;
+			else throw new Error("solve Error");
 		}
 	}
 	private solveStage6_RotateCube(frontSide: number)
@@ -1304,6 +1311,22 @@ export class CubeRotator
 			this.rAlg(rightSide, false);
 			this.rAlg(frontSide, true);
 		}
+	}
+
+	private checkCube()
+	{
+		return this.checkSide(0) &&
+			this.checkSide(1) &&
+			this.checkSide(2) &&
+			this.checkSide(3) &&
+			this.checkSide(4) &&
+			this.checkSide(5);
+	}
+	private checkSide(side: number)
+	{
+		const tiles = this.cube.sides[side].tiles;
+		tiles.forEach(t => { if (t.colorN != side) return false; });
+		return true;
 	}
 
 	private check2(num: number, check1: number, check2: number)

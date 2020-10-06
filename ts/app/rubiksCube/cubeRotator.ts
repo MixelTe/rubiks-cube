@@ -21,7 +21,8 @@ export class CubeRotator
 		window.addEventListener("keydown", (e) =>
 		{
 			const toRight = e.ctrlKey;
-			switch (e.code) {
+			switch (e.code)
+			{
 				case "Numpad5": this.cube.rotateSide(0, toRight); stopAll(); break;
 				case "Numpad6": this.cube.rotateSide(1, toRight); stopAll(); break;
 				case "Numpad2": this.cube.rotateSide(2, toRight); stopAll(); break;
@@ -51,7 +52,7 @@ export class CubeRotator
 		{
 			this.solveStep();
 			if (!this.animSolve) this.cube.update();
- 		}
+		}
 	}
 
 	private mixOne()
@@ -71,7 +72,8 @@ export class CubeRotator
 	{
 		if (this.rotationAlg.length == 0)
 		{
-			switch (this.solveStage) {
+			switch (this.solveStage)
+			{
 				case 0: this.solveStage0(); break;
 				case 1: this.solveStage1(); break;
 				case 2: this.solveStage2(); break;
@@ -132,7 +134,8 @@ export class CubeRotator
 		//on bottom
 		if (this.check2(tiles5[1].colorN, 0, color) && this.check2(tiles2[5].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, false);
 					this.rAlg(5, false);
@@ -160,7 +163,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles5[3].colorN, 0, color) && this.check2(tiles1[3].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, true);
 					this.rAlg(4, false);
@@ -188,7 +192,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles5[5].colorN, 0, color) && this.check2(tiles4[1].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(4, false);
 					this.rAlg(4, false);
@@ -216,7 +221,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles5[7].colorN, 0, color) && this.check2(tiles3[7].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, false);
 					this.rAlg(4, false);
@@ -245,7 +251,8 @@ export class CubeRotator
 		//on side
 		else if (this.check2(tiles4[3].colorN, 0, color) && this.check2(tiles1[1].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(4, true);
 					break;
@@ -269,7 +276,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles4[7].colorN, 0, color) && this.check2(tiles3[1].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(4, false);
 					break;
@@ -293,7 +301,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles2[3].colorN, 0, color) && this.check2(tiles1[5].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(0, true);
 					this.rAlg(1, true);
@@ -317,7 +326,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles2[7].colorN, 0, color) && this.check2(tiles3[5].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(0, false);
 					this.rAlg(3, false);
@@ -342,7 +352,8 @@ export class CubeRotator
 		//on top
 		else if (this.check2(tiles0[3].colorN, 0, color) && this.check2(tiles1[7].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(1, true);
 					this.rAlg(4, true);
@@ -377,7 +388,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles0[5].colorN, 0, color) && this.check2(tiles2[1].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(2, true);
 					this.rAlg(2, true);
@@ -412,7 +424,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles0[7].colorN, 0, color) && this.check2(tiles3[3].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(3, false);
 					this.rAlg(4, false);
@@ -438,7 +451,7 @@ export class CubeRotator
 						this.rAlg(2, true);
 						this.rAlg(3, false);
 						this.rAlg(2, false);
-						}
+					}
 					break;
 
 				default: throw new Error("switch default");
@@ -447,7 +460,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles0[1].colorN, 0, color) && this.check2(tiles4[5].colorN, 0, color))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					if (tiles0[1].colorN == color && tiles4[5].colorN == 0)
 					{
@@ -515,7 +529,8 @@ export class CubeRotator
 		this.log("stage1:", this.DEV_stageColor);
 
 		let c1, c2, c3;
-		switch (pos) {
+		switch (pos)
+		{
 			case 0: c1 = 0; c2 = 3; c3 = 4; break;
 			case 1: c1 = 0; c2 = 4; c3 = 1; break;
 			case 2: c1 = 0; c2 = 1; c3 = 2; break;
@@ -533,7 +548,8 @@ export class CubeRotator
 		//on bottom
 		if (this.check3(tiles5[0].colorN, c1, c2, c3) && this.check3(tiles3[6].colorN, c1, c2, c3) && this.check3(tiles2[6].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(4, true);
 					this.rAlg(5, false);
@@ -563,7 +579,8 @@ export class CubeRotator
 		}
 		else if (this.check3(tiles5[2].colorN, c1, c2, c3) && this.check3(tiles2[4].colorN, c1, c2, c3) && this.check3(tiles1[4].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, false);
 					this.rAlg(4, true);
@@ -593,7 +610,8 @@ export class CubeRotator
 		}
 		else if (this.check3(tiles5[4].colorN, c1, c2, c3) && this.check3(tiles1[2].colorN, c1, c2, c3) && this.check3(tiles4[2].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(3, false);
 					this.rAlg(5, true);
@@ -623,7 +641,8 @@ export class CubeRotator
 		}
 		else if (this.check3(tiles5[6].colorN, c1, c2, c3) && this.check3(tiles4[0].colorN, c1, c2, c3) && this.check3(tiles3[0].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, false);
 					this.rAlg(3, false);
@@ -654,7 +673,8 @@ export class CubeRotator
 		//on top
 		else if (this.check3(tiles0[0].colorN, c1, c2, c3) && this.check3(tiles3[2].colorN, c1, c2, c3) && this.check3(tiles4[6].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					for (let i = 0; i < 2; i++)
 					{
@@ -693,7 +713,8 @@ export class CubeRotator
 		}
 		else if (this.check3(tiles0[2].colorN, c1, c2, c3) && this.check3(tiles4[4].colorN, c1, c2, c3) && this.check3(tiles1[0].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(1, true);
 					this.rAlg(3, false);
@@ -732,7 +753,8 @@ export class CubeRotator
 		}
 		else if (this.check3(tiles0[4].colorN, c1, c2, c3) && this.check3(tiles1[6].colorN, c1, c2, c3) && this.check3(tiles2[2].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(1, false);
 					this.rAlg(4, true);
@@ -771,7 +793,8 @@ export class CubeRotator
 		}
 		else if (this.check3(tiles0[6].colorN, c1, c2, c3) && this.check3(tiles2[0].colorN, c1, c2, c3) && this.check3(tiles3[4].colorN, c1, c2, c3))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(2, false);
 					this.rAlg(4, true);
@@ -843,7 +866,8 @@ export class CubeRotator
 		this.log("stage2:", this.DEV_stageColor);
 
 		let c1, c2;
-		switch (pos) {
+		switch (pos)
+		{
 			case 0: c1 = 1; c2 = 2; break;
 			case 1: c1 = 2; c2 = 3; break;
 			case 2: c1 = 3; c2 = 4; break;
@@ -860,7 +884,8 @@ export class CubeRotator
 		//on bottom
 		if (this.check2(tiles5[1].colorN, c1, c2) && this.check2(tiles2[5].colorN, c1, c2))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, true);
 					this.solveStage2_CubeToSide(1, 2);
@@ -884,7 +909,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles5[3].colorN, c1, c2) && this.check2(tiles1[3].colorN, c1, c2))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.solveStage2_CubeToSide(1, 2);
 					break;
@@ -908,7 +934,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles5[5].colorN, c1, c2) && this.check2(tiles4[1].colorN, c1, c2))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, false);
 					this.solveStage2_CubeToSide(1, 2);
@@ -932,7 +959,8 @@ export class CubeRotator
 		}
 		else if (this.check2(tiles5[7].colorN, c1, c2) && this.check2(tiles3[7].colorN, c1, c2))
 		{
-			switch (pos) {
+			switch (pos)
+			{
 				case 0:
 					this.rAlg(5, false);
 					this.rAlg(5, false);
@@ -1108,11 +1136,13 @@ export class CubeRotator
 			}
 		}
 		f();
-		for (let i = 0; i < rotate5; i++) {
+		for (let i = 0; i < rotate5; i++)
+		{
 			this.rAlg(5, toRight5);
 		}
 		f();
-		for (let i = 0; i < rotate5; i++) {
+		for (let i = 0; i < rotate5; i++)
+		{
 			this.rAlg(5, !toRight5);
 		}
 	}
@@ -1153,7 +1183,7 @@ export class CubeRotator
 			!(this.check3(tiles5[0].colorN, 5, 2, 3) && this.check3(tiles3[6].colorN, 5, 2, 3) && this.check3(tiles2[6].colorN, 5, 2, 3)) ||
 			!(this.check3(tiles5[2].colorN, 5, 1, 2) && this.check3(tiles1[4].colorN, 5, 1, 2) && this.check3(tiles2[4].colorN, 5, 1, 2)) ||
 			!(this.check3(tiles5[4].colorN, 5, 1, 4) && this.check3(tiles1[2].colorN, 5, 1, 4) && this.check3(tiles4[2].colorN, 5, 1, 4)) ||
-			!(this.check3(tiles5[6].colorN, 5, 3, 4) && this.check3(tiles3[0].colorN, 5, 3, 4) && this.check3(tiles4[0].colorN, 5, 3, 4)) )
+			!(this.check3(tiles5[6].colorN, 5, 3, 4) && this.check3(tiles3[0].colorN, 5, 3, 4) && this.check3(tiles4[0].colorN, 5, 3, 4)))
 		{
 			throw new Error("solve Error");
 		}
@@ -1208,7 +1238,8 @@ export class CubeRotator
 		if (rotate0 + rotate2 + rotate4 + rotate6 > 0)
 		{
 			let rotated = 0;
-			for (let i = 0; i < rotate0; i++) {
+			for (let i = 0; i < rotate0; i++)
+			{
 				this.solveStage6_RotateCube(2);
 				rotated++;
 			}
@@ -1217,7 +1248,8 @@ export class CubeRotator
 			{
 				let rotatedCur = 0;
 				this.rAlg(5, false);
-				for (let i = 0; i < rotate2; i++) {
+				for (let i = 0; i < rotate2; i++)
+				{
 					this.solveStage6_RotateCube(2);
 					rotated++;
 					rotatedCur++;
@@ -1231,7 +1263,8 @@ export class CubeRotator
 				let rotatedCur = 0;
 				this.rAlg(5, true);
 				this.rAlg(5, true);
-				for (let i = 0; i < rotate4; i++) {
+				for (let i = 0; i < rotate4; i++)
+				{
 					this.solveStage6_RotateCube(2);
 					rotated++;
 					rotatedCur++;
@@ -1245,7 +1278,8 @@ export class CubeRotator
 			{
 				let rotatedCur = 0;
 				this.rAlg(5, true);
-				for (let i = 0; i < rotate6; i++) {
+				for (let i = 0; i < rotate6; i++)
+				{
 					this.solveStage6_RotateCube(2);
 					rotated++;
 					rotatedCur++;

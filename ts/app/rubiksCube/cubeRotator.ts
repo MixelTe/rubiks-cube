@@ -8,7 +8,7 @@ export class CubeRotator
 	private mixPastSide = 0;
 	private animMix = false;
 	private solveNow = false;
-	private solveStage: 0 | 1 | 2 | 3 | 4 = 0;
+	private solveStage: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0;
 	private rotationAlg: RAlg[] = [];
 	private animSolve = true;
 	private DEV_log = true;
@@ -76,6 +76,8 @@ export class CubeRotator
 				case 2: this.solveStage2(); break;
 				case 3: this.solveStage3(); break;
 				case 4: this.solveStage4(); break;
+				case 5: this.solveStage5(); break;
+				case 6: break;
 				default: throw new Error("switch default");
 			}
 		}
@@ -1032,7 +1034,6 @@ export class CubeRotator
 		else
 		{
 			this.solveStage = 4;
-			this.cube.update();
 		}
 	}
 	private solveStage3_SwapCubes(frontSide: number, rightSide: number)
@@ -1087,6 +1088,11 @@ export class CubeRotator
 			this.solveStage4_SwapCubes(4, 1, false);
 			this.log("alg3_0");
 		}
+		else
+		{
+			this.solveStage = 5;
+			this.cube.update();
+		}
 	}
 	private solveStage4_SwapCubes(frontSide: number, rotate5: number, toRight5: boolean)
 	{
@@ -1111,6 +1117,64 @@ export class CubeRotator
 		}
 	}
 
+	private solveStage5()
+	{
+		const tiles1 = this.cube.sides[1].tiles;
+		const tiles2 = this.cube.sides[2].tiles;
+		const tiles3 = this.cube.sides[3].tiles;
+		const tiles4 = this.cube.sides[4].tiles;
+		const tiles5 = this.cube.sides[5].tiles;
+		this.log("stage5:", this.DEV_stageColor);
+		if (!(this.check3(tiles5[0].colorN, 5, 2, 3) && this.check3(tiles3[6].colorN, 5, 2, 3) && this.check3(tiles2[6].colorN, 5, 2, 3)))
+		{
+			if (this.check3(tiles5[2].colorN, 5, 2, 3) && this.check3(tiles1[4].colorN, 5, 2, 3) && this.check3(tiles2[4].colorN, 5, 2, 3))
+			{
+				this.solveStage5_SwapCubes(1);
+				this.solveStage5_SwapCubes(1);
+				this.log("alg1_0");
+			}
+			else if (this.check3(tiles5[4].colorN, 5, 2, 3) && this.check3(tiles1[2].colorN, 5, 2, 3) && this.check3(tiles4[2].colorN, 5, 2, 3))
+			{
+				this.solveStage5_SwapCubes(1);
+				this.log("alg1_1");
+			}
+			else if (this.check3(tiles5[6].colorN, 5, 2, 3) && this.check3(tiles4[0].colorN, 5, 2, 3) && this.check3(tiles3[0].colorN, 5, 2, 3))
+			{
+				this.solveStage5_SwapCubes(2);
+				this.log("alg1_2");
+			}
+		}
+		else if (!(this.check3(tiles5[2].colorN, 5, 1, 2) && this.check3(tiles1[4].colorN, 5, 1, 2) && this.check3(tiles2[4].colorN, 5, 1, 2)))
+		{
+			this.solveStage5_SwapCubes(4);
+			this.log("alg2_0");
+		}
+		else if (
+			!(this.check3(tiles5[0].colorN, 5, 2, 3) && this.check3(tiles3[6].colorN, 5, 2, 3) && this.check3(tiles2[6].colorN, 5, 2, 3)) ||
+			!(this.check3(tiles5[2].colorN, 5, 1, 2) && this.check3(tiles1[4].colorN, 5, 1, 2) && this.check3(tiles2[4].colorN, 5, 1, 2)) ||
+			!(this.check3(tiles5[4].colorN, 5, 1, 4) && this.check3(tiles1[2].colorN, 5, 1, 4) && this.check3(tiles4[2].colorN, 5, 1, 4)) ||
+			!(this.check3(tiles5[6].colorN, 5, 3, 4) && this.check3(tiles3[0].colorN, 5, 3, 4) && this.check3(tiles4[0].colorN, 5, 3, 4)) )
+		{
+			throw new Error("solve Error");
+		}
+		else
+		{
+			this.solveStage = 6;
+		}
+	}
+	private solveStage5_SwapCubes(frontSide: number)
+	{
+		const leftSide = (frontSide + 2) % 4 + 1;
+		const rightSide = (frontSide + 4) % 4 + 1;
+		this.rAlg(rightSide, false);
+		this.rAlg(frontSide, false);
+		this.rAlg(leftSide, false);
+		this.rAlg(frontSide, true);
+		this.rAlg(rightSide, true);
+		this.rAlg(frontSide, false);
+		this.rAlg(leftSide, true);
+		this.rAlg(frontSide, true);
+	}
 
 	private check2(num: number, check1: number, check2: number)
 	{
@@ -1123,7 +1187,7 @@ export class CubeRotator
 	private rAlg(side: number, toRight: boolean)
 	{
 		// this.rotationAlg.push(new RAlg(side, toRight, this.animSolve, this.cube));
-		this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 4 ? this.animSolve : false, this.cube));
+		this.rotationAlg.push(new RAlg(side, toRight, this.solveStage >= 5 ? this.animSolve : false, this.cube));
 	}
 	private log(text: string, color = "")
 	{

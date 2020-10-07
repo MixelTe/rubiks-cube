@@ -85,6 +85,7 @@ export class CubeRotator
 					console.error("solve Error");
 					this.solveNow = false;
 					this.solveStage = 0;
+					this.cube.recreate();
 				}
 			}
 			if (!this.animSolve) this.cube.update();

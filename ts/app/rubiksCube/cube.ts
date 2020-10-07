@@ -7,31 +7,25 @@ export class Cube
 	private width = 6;
 	private shift = 1;
 	private rotateSpeed = 5;
+	private growOnCreate = true;
+	private growSpeed = 0.1;
 
 	private parent: Object3D | undefined;
 	private rotateAxis = new THREE.Object3D();
 	private rotateAxisCur: "x" | "y" | "z" = "x";
 	private rotateSpeedCur = 0;
+	private growScaleCur = 1;
 	private rotateNow = false;
-	public sides = [
-		new Side("blue", 0),
-		new Side("red", 1),
-		new Side("white", 2),
-		new Side("orange", 3),
-		new Side("yellow", 4),
-		new Side("green", 5),
-	];
+	private growNow = false;
+	public sides: Side[] = [];
 	private cubes: OneCube[] = [];
 	private font: THREE.TextGeometryParameters | null = null;
 
 	constructor(DEVMode = false)
 	{
-		this.sides[0].setSides(this.sides[4], this.sides[1], this.sides[2], this.sides[3]);
-		this.sides[1].setSides(this.sides[4], this.sides[5], this.sides[2], this.sides[0]);
-		this.sides[2].setSides(this.sides[0], this.sides[1], this.sides[5], this.sides[3]);
-		this.sides[3].setSides(this.sides[4], this.sides[0], this.sides[2], this.sides[5]);
-		this.sides[4].setSides(this.sides[5], this.sides[1], this.sides[0], this.sides[3]);
-		this.sides[5].setSides(this.sides[2], this.sides[1], this.sides[4], this.sides[3]);
+		if (this.growOnCreate) this.growNow = true;
+
+		this.createSides();
 
 		for (let z = -1; z <= 1; z++) {
 			for (let y = -1; y <= 1; y++) {
@@ -39,7 +33,7 @@ export class Cube
 				{
 					const mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(this.width, this.width, this.width), new THREE.MeshPhongMaterial({ color: "gray" }));
 					const tiles: Mesh[] = [];
-					this.cubes.push({ x, y, z, mesh, tiles });
+					this.cubes.push({ x, y, z, toX: 0, toY: 0, toZ: 0, mesh, tiles });
 				}
 			}
 		}
@@ -60,13 +54,40 @@ export class Cube
 		}
 	}
 
+	private createSides()
+	{
+		this.sides = [
+			new Side("blue", 0),
+			new Side("red", 1),
+			new Side("white", 2),
+			new Side("orange", 3),
+			new Side("yellow", 4),
+			new Side("green", 5),
+		];
+		this.sides[0].setSides(this.sides[4], this.sides[1], this.sides[2], this.sides[3]);
+		this.sides[1].setSides(this.sides[4], this.sides[5], this.sides[2], this.sides[0]);
+		this.sides[2].setSides(this.sides[0], this.sides[1], this.sides[5], this.sides[3]);
+		this.sides[3].setSides(this.sides[4], this.sides[0], this.sides[2], this.sides[5]);
+		this.sides[4].setSides(this.sides[5], this.sides[1], this.sides[0], this.sides[3]);
+		this.sides[5].setSides(this.sides[2], this.sides[1], this.sides[4], this.sides[3]);
+	}
 	public create(parent: Object3D)
 	{
 		this.parent = parent
 		parent.add(this.rotateAxis);
 		this.cubes.forEach(el =>
 		{
-			el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
+			if (this.growOnCreate)
+			{
+				el.toX = el.x * (this.width + this.shift);
+				el.toY = el.y * (this.width + this.shift);
+				el.toZ = el.z * (this.width + this.shift);
+				el.mesh.position.set(0, 0, 0);
+			}
+			else
+			{
+				el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
+			}
 			parent.add(el.mesh);
 		});
 		this.setTiles();
@@ -242,6 +263,19 @@ export class Cube
 	{
 		return !this.rotateNow;
 	}
+	public recreate()
+	{
+		this.createSides();
+		if (this.growOnCreate)
+		{
+			this.cubes.forEach(el =>
+			{
+				el.mesh.position.set(0, 0, 0);
+			});
+			this.growNow = true;
+		}
+		this.recreateTiles();
+	}
 
 	public anim(time: number)
 	{
@@ -251,6 +285,53 @@ export class Cube
 			if (this.rotateAxis.rotation[this.rotateAxisCur] > Math.PI / 2 ||
 				this.rotateAxis.rotation[this.rotateAxisCur] < -Math.PI / 2) this.endAnim();
 		}
+		if (this.growNow)
+		{
+			let done = true;
+			this.cubes.forEach((el, index) =>
+			{
+				if (index == 0)
+				{
+					let scale = el.mesh.position.x / el.toX;
+					if (Number.isNaN(scale)) scale = el.mesh.position.y / el.toY;
+					if (Number.isNaN(scale)) scale = el.mesh.position.z / el.toZ;
+					this.growScaleCur = scale;
+				}
+				let elDone = this.growOne(el);
+				if (!elDone) done = false;
+			});
+			this.growNow = !done;
+		}
+	}
+	private growOne(el: OneCube)
+	{
+		const x = this.groveOne_calcOne(el.mesh.position.x, el.toX);
+		const y = this.groveOne_calcOne(el.mesh.position.y, el.toY);
+		const z = this.groveOne_calcOne(el.mesh.position.z, el.toZ);
+
+		el.mesh.position.x = x.pos;
+		el.mesh.position.y = y.pos;
+		el.mesh.position.z = z.pos;
+
+		el.mesh.scale.setX(this.growScaleCur);
+		el.mesh.scale.setY(this.growScaleCur);
+		el.mesh.scale.setZ(this.growScaleCur);
+
+		return x.done && y.done && z.done;
+	}
+	private groveOne_calcOne(pos: number, toPos: number)
+	{
+		if (toPos > 0)
+		{
+			pos += this.growSpeed;
+			pos = Math.min(pos, toPos);
+		}
+		else
+		{
+			pos -= this.growSpeed;
+			pos = Math.max(pos, toPos);
+		}
+		return {pos, done: pos == toPos};
 	}
 	private endAnim()
 	{
@@ -277,6 +358,9 @@ interface OneCube
 	x: number,
 	y: number,
 	z: number,
+	toX: number,
+	toY: number,
+	toZ: number,
 	mesh: Mesh,
 	tiles: Mesh[],
 }

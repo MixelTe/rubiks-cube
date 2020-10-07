@@ -44,6 +44,7 @@ export class CubeRotator
 				case "Digit3": this.cube.rotateSide(3, toRight); stopAll(); break;
 				case "Digit4": this.cube.rotateSide(4, toRight); stopAll(); break;
 				case "Digit5": this.cube.rotateSide(5, toRight); stopAll(); break;
+				case "Delete": this.cube.recreate(); stopAll(); break;
 				case "Space":
 					this.mixNow = !this.mixNow;
 					this.solveNow = false;

@@ -48551,32 +48551,26 @@ class Cube {
         this.width = 6;
         this.shift = 1;
         this.rotateSpeed = 5;
+        this.growOnCreate = true;
+        this.growSpeed = 0.1;
         this.rotateAxis = new Object3D();
         this.rotateAxisCur = "x";
         this.rotateSpeedCur = 0;
+        this.growScaleCur = 1;
         this.rotateNow = false;
-        this.sides = [
-            new Side("blue", 0),
-            new Side("red", 1),
-            new Side("white", 2),
-            new Side("orange", 3),
-            new Side("yellow", 4),
-            new Side("green", 5),
-        ];
+        this.growNow = false;
+        this.sides = [];
         this.cubes = [];
         this.font = null;
-        this.sides[0].setSides(this.sides[4], this.sides[1], this.sides[2], this.sides[3]);
-        this.sides[1].setSides(this.sides[4], this.sides[5], this.sides[2], this.sides[0]);
-        this.sides[2].setSides(this.sides[0], this.sides[1], this.sides[5], this.sides[3]);
-        this.sides[3].setSides(this.sides[4], this.sides[0], this.sides[2], this.sides[5]);
-        this.sides[4].setSides(this.sides[5], this.sides[1], this.sides[0], this.sides[3]);
-        this.sides[5].setSides(this.sides[2], this.sides[1], this.sides[4], this.sides[3]);
+        if (this.growOnCreate)
+            this.growNow = true;
+        this.createSides();
         for (let z = -1; z <= 1; z++) {
             for (let y = -1; y <= 1; y++) {
                 for (let x = -1; x <= 1; x++) {
                     const mesh = new Mesh(new BoxBufferGeometry(this.width, this.width, this.width), new MeshPhongMaterial({ color: "gray" }));
                     const tiles = [];
-                    this.cubes.push({ x, y, z, mesh, tiles });
+                    this.cubes.push({ x, y, z, toX: 0, toY: 0, toZ: 0, mesh, tiles });
                 }
             }
         }
@@ -48593,11 +48587,35 @@ class Cube {
             });
         }
     }
+    createSides() {
+        this.sides = [
+            new Side("blue", 0),
+            new Side("red", 1),
+            new Side("white", 2),
+            new Side("orange", 3),
+            new Side("yellow", 4),
+            new Side("green", 5),
+        ];
+        this.sides[0].setSides(this.sides[4], this.sides[1], this.sides[2], this.sides[3]);
+        this.sides[1].setSides(this.sides[4], this.sides[5], this.sides[2], this.sides[0]);
+        this.sides[2].setSides(this.sides[0], this.sides[1], this.sides[5], this.sides[3]);
+        this.sides[3].setSides(this.sides[4], this.sides[0], this.sides[2], this.sides[5]);
+        this.sides[4].setSides(this.sides[5], this.sides[1], this.sides[0], this.sides[3]);
+        this.sides[5].setSides(this.sides[2], this.sides[1], this.sides[4], this.sides[3]);
+    }
     create(parent) {
         this.parent = parent;
         parent.add(this.rotateAxis);
         this.cubes.forEach(el => {
-            el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
+            if (this.growOnCreate) {
+                el.toX = el.x * (this.width + this.shift);
+                el.toY = el.y * (this.width + this.shift);
+                el.toZ = el.z * (this.width + this.shift);
+                el.mesh.position.set(0, 0, 0);
+            }
+            else {
+                el.mesh.position.set(el.x * (this.width + this.shift), el.y * (this.width + this.shift), el.z * (this.width + this.shift));
+            }
             parent.add(el.mesh);
         });
         this.setTiles();
@@ -48795,6 +48813,16 @@ class Cube {
     animEnded() {
         return !this.rotateNow;
     }
+    recreate() {
+        this.createSides();
+        if (this.growOnCreate) {
+            this.cubes.forEach(el => {
+                el.mesh.position.set(0, 0, 0);
+            });
+            this.growNow = true;
+        }
+        this.recreateTiles();
+    }
     anim(time) {
         if (this.rotateNow) {
             this.rotateAxis.rotation[this.rotateAxisCur] += this.rotateSpeedCur / 180 * Math.PI;
@@ -48802,6 +48830,46 @@ class Cube {
                 this.rotateAxis.rotation[this.rotateAxisCur] < -Math.PI / 2)
                 this.endAnim();
         }
+        if (this.growNow) {
+            let done = true;
+            this.cubes.forEach((el, index) => {
+                if (index == 0) {
+                    let scale = el.mesh.position.x / el.toX;
+                    if (Number.isNaN(scale))
+                        scale = el.mesh.position.y / el.toY;
+                    if (Number.isNaN(scale))
+                        scale = el.mesh.position.z / el.toZ;
+                    this.growScaleCur = scale;
+                }
+                let elDone = this.growOne(el);
+                if (!elDone)
+                    done = false;
+            });
+            this.growNow = !done;
+        }
+    }
+    growOne(el) {
+        const x = this.groveOne_calcOne(el.mesh.position.x, el.toX);
+        const y = this.groveOne_calcOne(el.mesh.position.y, el.toY);
+        const z = this.groveOne_calcOne(el.mesh.position.z, el.toZ);
+        el.mesh.position.x = x.pos;
+        el.mesh.position.y = y.pos;
+        el.mesh.position.z = z.pos;
+        el.mesh.scale.setX(this.growScaleCur);
+        el.mesh.scale.setY(this.growScaleCur);
+        el.mesh.scale.setZ(this.growScaleCur);
+        return x.done && y.done && z.done;
+    }
+    groveOne_calcOne(pos, toPos) {
+        if (toPos > 0) {
+            pos += this.growSpeed;
+            pos = Math.min(pos, toPos);
+        }
+        else {
+            pos -= this.growSpeed;
+            pos = Math.max(pos, toPos);
+        }
+        return { pos, done: pos == toPos };
     }
     endAnim() {
         if (this.parent != undefined) {
@@ -48883,6 +48951,10 @@ class CubeRotator {
                     this.cube.rotateSide(5, toRight);
                     stopAll();
                     break;
+                case "Delete":
+                    this.cube.recreate();
+                    stopAll();
+                    break;
                 case "Space":
                     this.mixNow = !this.mixNow;
                     this.solveNow = false;
@@ -48930,6 +49002,7 @@ class CubeRotator {
                     console.error("solve Error");
                     this.solveNow = false;
                     this.solveStage = 0;
+                    this.cube.recreate();
                 }
             }
             if (!this.animSolve)

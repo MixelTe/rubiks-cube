@@ -44,8 +44,21 @@ export class CubeRotator
 				case "Digit3": this.cube.rotateSide(3, toRight); stopAll(); break;
 				case "Digit4": this.cube.rotateSide(4, toRight); stopAll(); break;
 				case "Digit5": this.cube.rotateSide(5, toRight); stopAll(); break;
-				case "Space": this.mixNow = !this.mixNow; this.solveNow = false; if (!this.animMix && this.DEV_Mode) this.cube.update(); break;
-				case "Enter": this.solveNow = !this.solveNow; this.mixNow = false; this.solveStage = 0; this.rotationAlg = []; break;
+				case "Space":
+					this.mixNow = !this.mixNow;
+					this.solveNow = false;
+					if (!this.animMix && this.DEV_Mode) this.cube.update();
+					if (e.ctrlKey) this.animMix = false;
+					else this.animMix = true;
+					break;
+				case "Enter":
+					this.solveNow = !this.solveNow;
+					this.mixNow = false;
+					this.solveStage = 0;
+					this.rotationAlg = [];
+					if (e.ctrlKey) this.animSolve = false;
+					else this.animSolve = true;
+					break;
 			}
 		});
 	}
